@@ -1,0 +1,4255 @@
+================================================================================
+LORDWOLF AI STUDIO
+PROJECT SNAPSHOT
+================================================================================
+
+СТРУКТУРА ПРОЄКТУ
+--------------------------------------------------------------------------------
+LordWolfAI
+├── assets
+│   ├── backgrounds
+│   ├── characters
+│   ├── fonts
+│   ├── icons
+│   ├── music
+│   ├── props
+│   └── sounds
+├── lordwolf
+│   ├── ai
+│   │   ├── __init__.py
+│   │   ├── animation_ai.py
+│   │   ├── background_ai.py
+│   │   ├── character_ai.py
+│   │   ├── director_ai.py
+│   │   ├── script_ai.py
+│   │   └── voice_ai.py
+│   ├── animation
+│   │   ├── __init__.py
+│   │   ├── lipsync.py
+│   │   ├── motion.py
+│   │   ├── rig.py
+│   │   └── timeline.py
+│   ├── audio
+│   │   ├── __init__.py
+│   │   ├── music.py
+│   │   ├── sfx.py
+│   │   └── voice.py
+│   ├── core
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   ├── logger.py
+│   │   ├── project.py
+│   │   └── settings.py
+│   ├── data
+│   │   ├── __init__.py
+│   │   ├── background.py
+│   │   ├── character.py
+│   │   ├── project.py
+│   │   └── scene.py
+│   ├── engines
+│   │   ├── __init__.py
+│   │   ├── animation_engine.py
+│   │   ├── image_engine.py
+│   │   ├── music_engine.py
+│   │   ├── script_engine.py
+│   │   ├── video_engine.py
+│   │   └── voice_engine.py
+│   ├── image
+│   │   ├── __init__.py
+│   │   ├── background.py
+│   │   ├── character.py
+│   │   ├── generator.py
+│   │   └── props.py
+│   ├── managers
+│   │   ├── __init__.py
+│   │   ├── asset_manager.py
+│   │   ├── character_manager.py
+│   │   ├── project_manager.py
+│   │   └── scene_manager.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── ai_service.py
+│   │   ├── movie_service.py
+│   │   └── project_service.py
+│   ├── ui
+│   │   ├── __init__.py
+│   │   ├── background_panel.py
+│   │   ├── character_panel.py
+│   │   ├── main_window.py
+│   │   ├── menu.py
+│   │   ├── project_panel.py
+│   │   ├── render_panel.py
+│   │   ├── script_editor.py
+│   │   ├── timeline.py
+│   │   └── toolbar.py
+│   ├── utils
+│   │   ├── __init__.py
+│   │   ├── audio_utils.py
+│   │   ├── file_utils.py
+│   │   ├── image_utils.py
+│   │   └── video_utils.py
+│   ├── video
+│   │   ├── __init__.py
+│   │   ├── camera.py
+│   │   ├── export.py
+│   │   └── renderer.py
+│   ├── widgets
+│   │   └── __init__.py
+│   └── __init__.py
+├── models
+│   ├── animation
+│   ├── image
+│   ├── llm
+│   ├── music
+│   └── voice
+├── plugins
+│   ├── animation
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── image
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── llm
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── music
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── video
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── voice
+│   │   ├── __init__.py
+│   │   └── loader.py
+│   ├── __init__.py
+│   ├── plugin_base.py
+│   └── plugin_manager.py
+├── projects
+├── tests
+├── app.py
+├── comands.txt
+├── LICENSE
+├── project_snapshot.py
+├── project_snapshot.txt
+├── project_snapshot.zip
+├── README.md
+├── requirements.txt
+└── ui_dump.txt
+
+
+================================================================================
+Файл: app.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 25
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Main Application
+"""
+
+import sys
+
+from PySide6.QtWidgets import QApplication
+
+from lordwolf.ui.main_window import MainWindow
+
+
+def main():
+
+    app = QApplication(sys.argv)
+
+    window = MainWindow()
+
+    window.show()
+
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+
+================================================================================
+Файл: lordwolf/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/ai/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/ai/animation_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 120
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Animation AI
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Animation:
+
+    name: str
+
+    duration: float = 1.0
+
+    loop: bool = False
+
+    description: str = ""
+
+
+class AnimationAI:
+    """
+    AI керування анімаціями.
+    """
+
+    def __init__(self):
+
+        self.animations = {}
+
+        self.load_default_animations()
+
+    def load_default_animations(self):
+
+        defaults = [
+
+            Animation(
+                "idle",
+                2.0,
+                True,
+                "Стоїть спокійно"
+            ),
+
+            Animation(
+                "walk",
+                1.2,
+                True,
+                "Ходьба"
+            ),
+
+            Animation(
+                "run",
+                0.8,
+                True,
+                "Біг"
+            ),
+
+            Animation(
+                "jump",
+                0.7,
+                False,
+                "Стрибок"
+            ),
+
+            Animation(
+                "attack",
+                0.9,
+                False,
+                "Атака"
+            ),
+
+            Animation(
+                "talk",
+                1.0,
+                True,
+                "Розмова"
+            ),
+
+            Animation(
+                "happy",
+                1.0,
+                False,
+                "Радість"
+            ),
+
+            Animation(
+                "sad",
+                1.0,
+                False,
+                "Сум"
+            )
+
+        ]
+
+        for animation in defaults:
+
+            self.animations[animation.name] = animation
+
+    def get_animation(self, name):
+
+        return self.animations.get(name)
+
+    def get_all(self):
+
+        return list(self.animations.values())
+
+    def add_animation(self, animation):
+
+        self.animations[animation.name] = animation
+
+    def remove_animation(self, name):
+
+        if name in self.animations:
+
+            del self.animations[name]
+
+    def clear(self):
+
+        self.animations.clear()
+
+        self.load_default_animations()
+
+================================================================================
+Файл: lordwolf/ai/background_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 126
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Background AI
+"""
+
+from lordwolf.data.background import Background
+
+
+class BackgroundAI:
+    """
+    AI керування фонами.
+    """
+
+    def __init__(self):
+
+        self.backgrounds = {}
+
+    def create_background(self, name: str):
+
+        lower = name.lower()
+
+        if lower == "замок":
+
+            background = Background(
+                name="Замок",
+                category="Castle",
+                description="Великий старовинний замок."
+            )
+
+        elif lower == "ліс":
+
+            background = Background(
+                name="Ліс",
+                category="Forest",
+                description="Густий зелений ліс."
+            )
+
+        elif lower == "печера":
+
+            background = Background(
+                name="Печера",
+                category="Cave",
+                description="Темна кам'яна печера."
+            )
+
+        elif lower == "дорога":
+
+            background = Background(
+                name="Дорога",
+                category="Road",
+                description="Стара сільська дорога."
+            )
+
+        elif lower == "поле":
+
+            background = Background(
+                name="Поле",
+                category="Field",
+                description="Велике відкрите поле."
+            )
+
+        elif lower == "будинок":
+
+            background = Background(
+                name="Будинок",
+                category="House",
+                description="Затишний будинок."
+            )
+
+        elif lower == "кімната":
+
+            background = Background(
+                name="Кімната",
+                category="Room",
+                description="Кімната в будинку."
+            )
+
+        elif lower == "кабінет":
+
+            background = Background(
+                name="Кабінет",
+                category="Office",
+                description="Робочий кабінет."
+            )
+
+        elif lower == "палац":
+
+            background = Background(
+                name="Палац",
+                category="Palace",
+                description="Розкішний палац."
+            )
+
+        elif lower == "вежа":
+
+            background = Background(
+                name="Вежа",
+                category="Tower",
+                description="Висока кам'яна вежа."
+            )
+
+        else:
+
+            background = Background(
+                name=name
+            )
+
+        self.backgrounds[background.name] = background
+
+        return background
+
+    def get_background(self, name):
+
+        return self.backgrounds.get(name)
+
+    def get_all(self):
+
+        return list(self.backgrounds.values())
+
+    def remove(self, name):
+
+        self.backgrounds.pop(name, None)
+
+    def clear(self):
+
+        self.backgrounds.clear()
+
+================================================================================
+Файл: lordwolf/ai/character_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 135
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Character AI
+"""
+
+from lordwolf.data.character import Character
+
+
+class CharacterAI:
+    """
+    AI керування персонажами.
+    """
+
+    def __init__(self):
+
+        self.characters = {}
+
+    def create_character(self, name: str):
+
+        lower = name.lower()
+
+        if lower == "лорд вовк":
+
+            character = Character(
+                name="Лорд Вовк",
+                species="Wolf",
+                gender="Male",
+                age="Adult",
+                description="Багатий аристократ.",
+                clothes="Чорний фрак, бордовий жилет, циліндр.",
+                voice="Deep",
+                personality="Розумний, спокійний"
+            )
+
+        elif lower == "блондинка":
+
+            character = Character(
+                name="Блондинка",
+                species="Human",
+                gender="Female",
+                age="Young",
+                description="Добра молода дівчина.",
+                clothes="Червона сукня.",
+                voice="Soft",
+                personality="Добра, смілива"
+            )
+
+        elif lower == "брюнетка":
+
+            character = Character(
+                name="Брюнетка",
+                species="Human",
+                gender="Female",
+                age="Young",
+                description="Елегантна жінка.",
+                clothes="Біла сукня.",
+                voice="Calm",
+                personality="Спокійна, розумна"
+            )
+
+        elif lower == "король":
+
+            character = Character(
+                name="Король",
+                species="Human",
+                gender="Male",
+                age="Old",
+                description="Правитель королівства."
+            )
+
+        elif lower == "королева":
+
+            character = Character(
+                name="Королева",
+                species="Human",
+                gender="Female",
+                age="Adult",
+                description="Королева держави."
+            )
+
+        elif lower == "лицар":
+
+            character = Character(
+                name="Лицар",
+                species="Human",
+                gender="Male",
+                age="Adult",
+                description="Хоробрий лицар."
+            )
+
+        elif lower == "чаклун":
+
+            character = Character(
+                name="Чаклун",
+                species="Human",
+                gender="Male",
+                age="Old",
+                description="Могутній чаклун."
+            )
+
+        elif lower == "дракон":
+
+            character = Character(
+                name="Дракон",
+                species="Dragon",
+                gender="Unknown",
+                age="Ancient",
+                description="Величезний дракон."
+            )
+
+        else:
+
+            character = Character(
+                name=name
+            )
+
+        self.characters[character.name] = character
+
+        return character
+
+    def get_character(self, name):
+
+        return self.characters.get(name)
+
+    def get_all(self):
+
+        return list(self.characters.values())
+
+    def remove(self, name):
+
+        self.characters.pop(name, None)
+
+    def clear(self):
+
+        self.characters.clear()
+
+================================================================================
+Файл: lordwolf/ai/director_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 75
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Director AI
+"""
+
+from lordwolf.ai.script_ai import ScriptAI
+from lordwolf.ai.character_ai import CharacterAI
+from lordwolf.ai.background_ai import BackgroundAI
+from lordwolf.ai.animation_ai import AnimationAI
+from lordwolf.ai.voice_ai import VoiceAI
+
+from lordwolf.data.project import MovieProject
+
+
+class DirectorAI:
+    """
+    Головний координатор AI.
+
+    Створює MovieProject,
+    який потім передається всім Engines.
+    """
+
+    def __init__(self):
+
+        self.script_ai = ScriptAI()
+
+        self.character_ai = CharacterAI()
+
+        self.background_ai = BackgroundAI()
+
+        self.animation_ai = AnimationAI()
+
+        self.voice_ai = VoiceAI()
+
+        self.project = MovieProject()
+
+    def create_movie(self, script):
+
+        self.project.clear()
+
+        self.project.script = script
+
+        result = self.script_ai.analyze(script)
+
+        self.project.scenes = result["scenes"]
+
+        for name in result["characters"]:
+
+            character = self.character_ai.create_character(name)
+
+            self.project.characters.append(character)
+
+        for name in result["backgrounds"]:
+
+            background = self.background_ai.create_background(name)
+
+            self.project.backgrounds.append(background)
+
+        self.project.animations = self.animation_ai.get_all()
+
+        self.project.voices = self.voice_ai.get_all()
+
+        return self.project
+
+    def get_movie_project(self):
+
+        return self.project
+
+    def reset(self):
+
+        self.project.clear()
+
+        self.character_ai.clear()
+
+        self.background_ai.clear()
+
+================================================================================
+Файл: lordwolf/ai/script_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 157
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Script AI
+"""
+
+from typing import Dict
+
+from lordwolf.data.scene import Scene
+
+
+class ScriptAI:
+    """
+    AI аналізатор сценарію.
+
+    Перетворює текст сценарію
+    у список сцен, персонажів і фонів.
+    """
+
+    def __init__(self):
+
+        self.reset()
+
+    def reset(self):
+
+        self.characters = set()
+
+        self.backgrounds = set()
+
+        self.scenes = []
+
+    def analyze(self, script: str) -> Dict:
+
+        self.reset()
+
+        current_scene = None
+
+        scene_number = 1
+
+        for line in script.splitlines():
+
+            text = line.strip()
+
+            if not text:
+                continue
+
+            if text.lower().startswith("сцена"):
+
+                if current_scene is not None:
+                    self.scenes.append(current_scene)
+
+                current_scene = Scene(
+                    number=scene_number,
+                    title=text
+                )
+
+                scene_number += 1
+
+                continue
+
+            if current_scene is None:
+
+                current_scene = Scene(
+                    number=scene_number,
+                    title="Сцена 1"
+                )
+
+            current_scene.add_action(text)
+
+            self.detect_characters(text)
+
+            self.detect_backgrounds(text)
+
+        if current_scene is not None:
+
+            self.scenes.append(current_scene)
+
+        return self.get_result()
+
+    def detect_characters(self, text: str):
+
+        names = [
+
+            "вовк",
+
+            "лорд вовк",
+
+            "блондинка",
+
+            "брюнетка",
+
+            "король",
+
+            "королева",
+
+            "лицар",
+
+            "чаклун",
+
+            "дракон"
+
+        ]
+
+        lower = text.lower()
+
+        for name in names:
+
+            if name in lower:
+
+                self.characters.add(name.title())
+
+    def detect_backgrounds(self, text: str):
+
+        places = [
+
+            "замок",
+
+            "ліс",
+
+            "печера",
+
+            "дорога",
+
+            "поле",
+
+            "будинок",
+
+            "кімната",
+
+            "кабінет",
+
+            "палац",
+
+            "вежа"
+
+        ]
+
+        lower = text.lower()
+
+        for place in places:
+
+            if place in lower:
+
+                self.backgrounds.add(place.title())
+
+    def get_result(self):
+
+        return {
+
+            "scene_count": len(self.scenes),
+
+            "characters": sorted(self.characters),
+
+            "backgrounds": sorted(self.backgrounds),
+
+            "scenes": self.scenes
+
+        }
+
+================================================================================
+Файл: lordwolf/ai/voice_ai.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 98
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Voice AI
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Voice:
+
+    name: str
+
+    gender: str
+
+    language: str
+
+    emotion: str = "Normal"
+
+    speed: float = 1.0
+
+    pitch: float = 1.0
+
+
+class VoiceAI:
+    """
+    AI керування голосами.
+    """
+
+    def __init__(self):
+
+        self.voices = {}
+
+        self.load_default_voices()
+
+    def load_default_voices(self):
+
+        defaults = [
+
+            Voice(
+                "Narrator",
+                "Unknown",
+                "uk"
+            ),
+
+            Voice(
+                "Male",
+                "Male",
+                "uk"
+            ),
+
+            Voice(
+                "Female",
+                "Female",
+                "uk"
+            ),
+
+            Voice(
+                "Old Man",
+                "Male",
+                "uk"
+            ),
+
+            Voice(
+                "Young Girl",
+                "Female",
+                "uk"
+            )
+
+        ]
+
+        for voice in defaults:
+
+            self.voices[voice.name] = voice
+
+    def get_voice(self, name):
+
+        return self.voices.get(name)
+
+    def get_all(self):
+
+        return list(self.voices.values())
+
+    def add_voice(self, voice):
+
+        self.voices[voice.name] = voice
+
+    def remove_voice(self, name):
+
+        if name in self.voices:
+
+            del self.voices[name]
+
+    def clear(self):
+
+        self.voices.clear()
+
+        self.load_default_voices()
+
+================================================================================
+Файл: lordwolf/animation/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/animation/lipsync.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/animation/motion.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/animation/rig.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/animation/timeline.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/audio/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/audio/music.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/audio/sfx.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/audio/voice.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/core/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/core/config.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 15
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Configuration
+"""
+
+APP_NAME = "LordWolf AI Studio"
+
+VERSION = "0.0.1 Alpha"
+
+AUTHOR = "Alex & ChatGPT"
+
+ORGANIZATION = "LordWolf"
+
+WINDOW_WIDTH = 1400
+WINDOW_HEIGHT = 900
+
+================================================================================
+Файл: lordwolf/core/logger.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 29
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+Logger
+"""
+
+from datetime import datetime
+
+
+class Logger:
+
+    @staticmethod
+    def info(message):
+
+        print(
+            f"[INFO] {datetime.now().strftime('%H:%M:%S')} | {message}"
+        )
+
+    @staticmethod
+    def warning(message):
+
+        print(
+            f"[WARNING] {datetime.now().strftime('%H:%M:%S')} | {message}"
+        )
+
+    @staticmethod
+    def error(message):
+
+        print(
+            f"[ERROR] {datetime.now().strftime('%H:%M:%S')} | {message}"
+        )
+
+================================================================================
+Файл: lordwolf/core/project.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 32
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+Project Manager
+"""
+
+
+class Project:
+
+    def __init__(self):
+
+        self.name = "Untitled"
+
+        self.author = ""
+
+        self.script = ""
+
+        self.characters = []
+
+        self.backgrounds = []
+
+        self.scenes = []
+
+    def new(self):
+
+        self.name = "New Project"
+
+        self.script = ""
+
+        self.characters.clear()
+
+        self.backgrounds.clear()
+
+        self.scenes.clear()
+
+================================================================================
+Файл: lordwolf/core/settings.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 17
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+Application settings
+"""
+
+class Settings:
+
+    def __init__(self):
+
+        self.language = "uk"
+
+        self.theme = "dark"
+
+        self.project_path = "projects"
+
+        self.assets_path = "assets"
+
+        self.models_path = "models"
+
+================================================================================
+Файл: lordwolf/data/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/data/background.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 25
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Data Model: Background
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Background:
+    """
+    Єдина модель фону для всієї системи.
+    """
+
+    name: str
+    category: str = "Unknown"
+
+    description: str = ""
+
+    weather: str = "Clear"
+    daytime: str = "Day"
+
+    # майбутні AI генерації
+    image_path: str = ""
+    style: str = ""
+
+================================================================================
+Файл: lordwolf/data/character.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 29
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Data Model: Character
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Character:
+    """
+    Єдина модель персонажа для всієї системи.
+    Використовується AI, Engine і UI.
+    """
+
+    name: str
+    species: str = "Unknown"
+    gender: str = "Unknown"
+    age: str = "Unknown"
+
+    description: str = ""
+    clothes: str = ""
+    voice: str = ""
+    personality: str = ""
+
+    # майбутні поля для анімації
+    model_path: str = ""
+    texture_path: str = ""
+    animation_set: str = ""
+
+================================================================================
+Файл: lordwolf/data/project.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 135
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Movie Project (CORE v2)
+"""
+
+from dataclasses import dataclass, field, asdict
+from typing import List, Dict, Any
+
+
+# -----------------------------
+# SCENE
+# -----------------------------
+@dataclass
+class Scene:
+
+    number: int
+    title: str
+
+    actions: List[str] = field(default_factory=list)
+
+    characters: List[str] = field(default_factory=list)
+    backgrounds: List[str] = field(default_factory=list)
+    animations: List[str] = field(default_factory=list)
+
+    def to_dict(self):
+        return asdict(self)
+
+
+# -----------------------------
+# CHARACTER
+# -----------------------------
+@dataclass
+class CharacterRef:
+
+    name: str
+    role: str = "unknown"
+    description: str = ""
+
+    def to_dict(self):
+        return asdict(self)
+
+
+# -----------------------------
+# BACKGROUND
+# -----------------------------
+@dataclass
+class BackgroundRef:
+
+    name: str
+    category: str = "unknown"
+    description: str = ""
+
+    def to_dict(self):
+        return asdict(self)
+
+
+# -----------------------------
+# MOVIE PROJECT
+# -----------------------------
+class MovieProject:
+    """
+    Центральний контейнер всієї AI системи.
+    """
+
+    def __init__(self):
+
+        self.title = "Новий проєкт"
+        self.script = ""
+
+        self.scenes: List[Scene] = []
+        self.characters: List[CharacterRef] = []
+        self.backgrounds: List[BackgroundRef] = []
+
+        self.animations: List[Any] = []
+        self.voices: List[Any] = []
+        self.music: List[Any] = []
+        self.camera: List[Any] = []
+
+        self.render_settings: Dict[str, Any] = {}
+
+    # -------------------------
+    # RESET
+    # -------------------------
+    def clear(self):
+
+        self.__init__()
+
+    # -------------------------
+    # COUNTERS
+    # -------------------------
+    def scene_count(self):
+        return len(self.scenes)
+
+    def character_count(self):
+        return len(self.characters)
+
+    def background_count(self):
+        return len(self.backgrounds)
+
+    # -------------------------
+    # SERIALIZATION SAFE
+    # -------------------------
+    def to_dict(self):
+
+        return {
+            "title": self.title,
+            "script": self.script,
+
+            "scene_count": self.scene_count(),
+            "character_count": self.character_count(),
+            "background_count": self.background_count(),
+
+            "scenes": [s.to_dict() for s in self.scenes],
+            "characters": [c.to_dict() for c in self.characters],
+            "backgrounds": [b.to_dict() for b in self.backgrounds],
+
+            "animations": self.animations,
+            "voices": self.voices,
+            "music": self.music,
+            "camera": self.camera,
+
+            "render_settings": self.render_settings
+        }
+
+    # -------------------------
+    # DEBUG
+    # -------------------------
+    def __str__(self):
+
+        return (
+            f"<MovieProject "
+            f"Scenes={self.scene_count()} "
+            f"Characters={self.character_count()} "
+            f"Backgrounds={self.background_count()}>"
+        )
+
+================================================================================
+Файл: lordwolf/data/scene.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 104
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Scene Data Model
+"""
+
+from dataclasses import dataclass, field
+from typing import List
+
+
+@dataclass
+class Scene:
+    """
+    Модель сцени мультфільму.
+
+    Scene — це контейнер даних.
+    Жодної AI-логіки тут бути не повинно.
+    """
+
+    number: int
+
+    title: str
+
+    actions: List[str] = field(default_factory=list)
+
+    characters: List[str] = field(default_factory=list)
+
+    backgrounds: List[str] = field(default_factory=list)
+
+    animations: List[str] = field(default_factory=list)
+
+    music: List[str] = field(default_factory=list)
+
+    voices: List[str] = field(default_factory=list)
+
+    camera: List[str] = field(default_factory=list)
+
+    duration: float = 0.0
+
+    notes: str = ""
+
+    def add_action(self, action: str):
+
+        if action:
+
+            self.actions.append(action)
+
+    def add_character(self, name: str):
+
+        if name and name not in self.characters:
+
+            self.characters.append(name)
+
+    def add_background(self, name: str):
+
+        if name and name not in self.backgrounds:
+
+            self.backgrounds.append(name)
+
+    def add_animation(self, animation: str):
+
+        if animation and animation not in self.animations:
+
+            self.animations.append(animation)
+
+    def add_voice(self, voice: str):
+
+        if voice and voice not in self.voices:
+
+            self.voices.append(voice)
+
+    def add_music(self, music: str):
+
+        if music and music not in self.music:
+
+            self.music.append(music)
+
+    def add_camera(self, camera: str):
+
+        if camera and camera not in self.camera:
+
+            self.camera.append(camera)
+
+    def clear(self):
+
+        self.actions.clear()
+        self.characters.clear()
+        self.backgrounds.clear()
+        self.animations.clear()
+        self.music.clear()
+        self.voices.clear()
+        self.camera.clear()
+
+        self.duration = 0.0
+
+        self.notes = ""
+
+    def __str__(self):
+
+        return (
+            f"Scene {self.number}: {self.title} "
+            f"(Actions={len(self.actions)}, "
+            f"Characters={len(self.characters)}, "
+            f"Backgrounds={len(self.backgrounds)})"
+        )
+
+================================================================================
+Файл: lordwolf/engines/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/engines/animation_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 67
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Animation Engine
+"""
+
+from dataclasses import dataclass
+from typing import List
+
+
+@dataclass
+class AnimationClip:
+
+    name: str
+
+    duration: float
+
+    loop: bool = False
+
+
+class AnimationEngine:
+    """
+    Рушій анімації.
+    """
+
+    def __init__(self):
+
+        self.timeline: List[AnimationClip] = []
+
+    def add_clip(self, name, duration, loop=False):
+
+        clip = AnimationClip(
+
+            name=name,
+
+            duration=duration,
+
+            loop=loop
+
+        )
+
+        self.timeline.append(clip)
+
+        return clip
+
+    def remove_clip(self, index):
+
+        if 0 <= index < len(self.timeline):
+
+            del self.timeline[index]
+
+    def clear(self):
+
+        self.timeline.clear()
+
+    def total_duration(self):
+
+        return sum(
+
+            clip.duration
+
+            for clip in self.timeline
+
+        )
+
+    def get_timeline(self):
+
+        return self.timeline
+
+================================================================================
+Файл: lordwolf/engines/image_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 69
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Image Engine
+"""
+
+from pathlib import Path
+
+
+class ImageEngine:
+    """
+    Рушій генерації зображень.
+    У майбутньому тут будуть:
+    - Stable Diffusion
+    - ComfyUI
+    - Flux
+    - локальні моделі
+    """
+
+    def __init__(self, assets_path="assets"):
+
+        self.assets_path = Path(assets_path)
+
+        self.characters_path = self.assets_path / "characters"
+        self.backgrounds_path = self.assets_path / "backgrounds"
+        self.props_path = self.assets_path / "props"
+
+        self.characters_path.mkdir(parents=True, exist_ok=True)
+        self.backgrounds_path.mkdir(parents=True, exist_ok=True)
+        self.props_path.mkdir(parents=True, exist_ok=True)
+
+    def generate_character(self, name: str, prompt: str = None):
+
+        """
+        Поки що заглушка.
+        Пізніше тут буде AI генерація PNG.
+        """
+
+        file_path = self.characters_path / f"{name}.png"
+
+        # TODO: підключити AI генерацію
+        # зараз просто створюємо пустий файл як тест
+
+        file_path.touch()
+
+        return str(file_path)
+
+    def generate_background(self, name: str, prompt: str = None):
+
+        file_path = self.backgrounds_path / f"{name}.png"
+
+        file_path.touch()
+
+        return str(file_path)
+
+    def generate_prop(self, name: str, prompt: str = None):
+
+        file_path = self.props_path / f"{name}.png"
+
+        file_path.touch()
+
+        return str(file_path)
+
+    def get_character_path(self, name: str):
+
+        return str(self.characters_path / f"{name}.png")
+
+    def get_background_path(self, name: str):
+
+        return str(self.backgrounds_path / f"{name}.png")
+
+================================================================================
+Файл: lordwolf/engines/music_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 68
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Music Engine
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class MusicTrack:
+
+    name: str
+
+    mood: str
+
+    duration: float = 0.0
+
+    file_path: str = ""
+
+
+class MusicEngine:
+    """
+    Рушій музики та емоційних треків.
+    """
+
+    def __init__(self):
+
+        self.tracks = []
+
+    def add_track(self, name, mood="neutral", duration=0.0):
+
+        track = MusicTrack(
+
+            name=name,
+
+            mood=mood,
+
+            duration=duration
+
+        )
+
+        self.tracks.append(track)
+
+        return track
+
+    def get_tracks(self):
+
+        return self.tracks
+
+    def clear(self):
+
+        self.tracks.clear()
+
+    def total_duration(self):
+
+        return sum(track.duration for track in self.tracks)
+
+    def find_by_mood(self, mood):
+
+        return [
+
+            track
+
+            for track in self.tracks
+
+            if track.mood == mood
+
+        ]
+
+================================================================================
+Файл: lordwolf/engines/script_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 83
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Script Engine
+"""
+
+from typing import Optional
+
+from lordwolf.ai.director_ai import DirectorAI
+from lordwolf.data.project import MovieProject
+
+
+class ScriptEngine:
+    """
+    Script Engine
+
+    Вхідна точка всієї AI системи.
+
+    Отримує сценарій від UI,
+    передає його DirectorAI,
+    повертає готовий MovieProject.
+    """
+
+    def __init__(self):
+
+        self.director = DirectorAI()
+
+        self.last_project: Optional[MovieProject] = None
+
+    # -------------------------------------------------
+    # MAIN
+    # -------------------------------------------------
+
+    def process(self, script: str) -> MovieProject:
+        """
+        Побудова MovieProject із текстового сценарію.
+        """
+
+        self.last_project = self.director.create_movie(script)
+
+        return self.last_project
+
+    # -------------------------------------------------
+    # ACCESS
+    # -------------------------------------------------
+
+    def get_movie_project(self) -> Optional[MovieProject]:
+
+        return self.last_project
+
+    def has_project(self) -> bool:
+
+        return self.last_project is not None
+
+    def get_scenes(self):
+
+        if not self.has_project():
+            return []
+
+        return self.last_project.scenes
+
+    def get_characters(self):
+
+        if not self.has_project():
+            return []
+
+        return self.last_project.characters
+
+    def get_backgrounds(self):
+
+        if not self.has_project():
+            return []
+
+        return self.last_project.backgrounds
+
+    # -------------------------------------------------
+    # RESET
+    # -------------------------------------------------
+
+    def reset(self):
+
+        self.last_project = None
+
+        self.director.reset()
+
+================================================================================
+Файл: lordwolf/engines/video_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 92
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Video Engine
+"""
+
+from dataclasses import dataclass
+from typing import List
+
+
+@dataclass
+class VideoFrame:
+
+    image_path: str
+
+    duration: float = 1.0
+
+    audio_path: str = ""
+
+    animation: str = ""
+
+
+class VideoEngine:
+    """
+    Рушій фінального відео-рендеру.
+    """
+
+    def __init__(self):
+
+        self.frames: List[VideoFrame] = []
+
+    def add_frame(self, image_path, duration=1.0, audio_path="", animation=""):
+
+        frame = VideoFrame(
+
+            image_path=image_path,
+
+            duration=duration,
+
+            audio_path=audio_path,
+
+            animation=animation
+
+        )
+
+        self.frames.append(frame)
+
+        return frame
+
+    def clear(self):
+
+        self.frames.clear()
+
+    def total_duration(self):
+
+        return sum(frame.duration for frame in self.frames)
+
+    def get_frames(self):
+
+        return self.frames
+
+    def build_video_plan(self):
+
+        """
+        Поки що не рендерить MP4.
+        Але створює повний план відео.
+        """
+
+        return {
+
+            "total_frames": len(self.frames),
+
+            "total_duration": self.total_duration(),
+
+            "frames": [
+
+                {
+
+                    "image": f.image_path,
+
+                    "audio": f.audio_path,
+
+                    "animation": f.animation,
+
+                    "duration": f.duration
+
+                }
+
+                for f in self.frames
+
+            ]
+
+        }
+
+================================================================================
+Файл: lordwolf/engines/voice_engine.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 60
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Voice Engine
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class VoiceTrack:
+
+    text: str
+
+    voice: str
+
+    speed: float = 1.0
+
+    pitch: float = 1.0
+
+    file_path: str = ""
+
+
+class VoiceEngine:
+    """
+    Рушій озвучення персонажів.
+    """
+
+    def __init__(self):
+
+        self.tracks = []
+
+    def add_voice(self, text, voice="Narrator", speed=1.0, pitch=1.0):
+
+        track = VoiceTrack(
+
+            text=text,
+
+            voice=voice,
+
+            speed=speed,
+
+            pitch=pitch
+
+        )
+
+        self.tracks.append(track)
+
+        return track
+
+    def clear(self):
+
+        self.tracks.clear()
+
+    def get_tracks(self):
+
+        return self.tracks
+
+    def total_lines(self):
+
+        return len(self.tracks)
+
+================================================================================
+Файл: lordwolf/image/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/image/background.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/image/character.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/image/generator.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/image/props.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/managers/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/managers/asset_manager.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 75
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Asset Manager
+"""
+
+from pathlib import Path
+
+
+class AssetManager:
+    """
+    Керує всіма ресурсами проєкту.
+    """
+
+    def __init__(self):
+
+        self.assets = {
+            "characters": [],
+            "backgrounds": [],
+            "props": [],
+            "music": [],
+            "sounds": [],
+            "fonts": [],
+            "icons": []
+        }
+
+    def add_asset(self, category, asset):
+
+        if category not in self.assets:
+            self.assets[category] = []
+
+        self.assets[category].append(asset)
+
+    def remove_asset(self, category, asset):
+
+        if category not in self.assets:
+            return
+
+        if asset in self.assets[category]:
+            self.assets[category].remove(asset)
+
+    def get_assets(self, category):
+
+        return self.assets.get(category, [])
+
+    def clear_category(self, category):
+
+        if category in self.assets:
+            self.assets[category].clear()
+
+    def clear(self):
+
+        for category in self.assets:
+            self.assets[category].clear()
+
+    def asset_exists(self, category, asset):
+
+        return asset in self.assets.get(category, [])
+
+    def import_asset(self, category, filepath):
+
+        path = Path(filepath)
+
+        if not path.exists():
+            return False
+
+        self.add_asset(category, str(path))
+
+        return True
+
+    def get_summary(self):
+
+        return {
+            category: len(items)
+            for category, items in self.assets.items()
+        }
+
+================================================================================
+Файл: lordwolf/managers/character_manager.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 45
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Character Manager
+"""
+
+from typing import Dict
+
+
+class CharacterManager:
+    """
+    Керує всіма персонажами проєкту.
+    """
+
+    def __init__(self):
+
+        self.characters: Dict[str, object] = {}
+
+    def add_character(self, character):
+
+        self.characters[character.name] = character
+
+    def remove_character(self, name):
+
+        if name in self.characters:
+            del self.characters[name]
+
+    def get_character(self, name):
+
+        return self.characters.get(name)
+
+    def exists(self, name):
+
+        return name in self.characters
+
+    def get_all(self):
+
+        return list(self.characters.values())
+
+    def count(self):
+
+        return len(self.characters)
+
+    def clear(self):
+
+        self.characters.clear()
+
+================================================================================
+Файл: lordwolf/managers/project_manager.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 90
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Project Manager
+"""
+
+from pathlib import Path
+import json
+
+
+class ProjectManager:
+    """
+    Керує проєктами LordWolf AI Studio.
+    """
+
+    def __init__(self):
+
+        self.current_project = None
+
+        self.project_data = {}
+
+    def new_project(self, name):
+
+        self.current_project = name
+
+        self.project_data = {
+
+            "name": name,
+
+            "script": "",
+
+            "characters": [],
+
+            "backgrounds": [],
+
+            "scenes": [],
+
+            "music": [],
+
+            "sounds": []
+        }
+
+        return self.project_data
+
+    def save_project(self, filename):
+
+        if self.project_data is None:
+            return False
+
+        path = Path(filename)
+
+        with open(path, "w", encoding="utf-8") as file:
+
+            json.dump(
+                self.project_data,
+                file,
+                ensure_ascii=False,
+                indent=4
+            )
+
+        return True
+
+    def load_project(self, filename):
+
+        path = Path(filename)
+
+        with open(path, "r", encoding="utf-8") as file:
+
+            self.project_data = json.load(file)
+
+        self.current_project = self.project_data.get("name")
+
+        return self.project_data
+
+    def get_project(self):
+
+        return self.project_data
+
+    def set_script(self, script):
+
+        self.project_data["script"] = script
+
+    def get_script(self):
+
+        return self.project_data.get("script", "")
+
+    def clear(self):
+
+        self.current_project = None
+
+        self.project_data = {}
+
+================================================================================
+Файл: lordwolf/managers/scene_manager.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 78
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Scene Manager
+"""
+
+from dataclasses import dataclass, field
+from typing import List
+
+
+@dataclass
+class Scene:
+
+    id: int
+
+    title: str
+
+    background: str = ""
+
+    characters: List[str] = field(default_factory=list)
+
+    actions: List[str] = field(default_factory=list)
+
+    duration: float = 5.0
+
+
+class SceneManager:
+
+    def __init__(self):
+
+        self.scenes = []
+
+    def create_scene(self, title):
+
+        scene = Scene(
+
+            id=len(self.scenes) + 1,
+
+            title=title
+
+        )
+
+        self.scenes.append(scene)
+
+        return scene
+
+    def add_scene(self, scene):
+
+        self.scenes.append(scene)
+
+    def remove_scene(self, scene_id):
+
+        self.scenes = [
+
+            scene
+
+            for scene in self.scenes
+
+            if scene.id != scene_id
+
+        ]
+
+    def get_scene(self, scene_id):
+
+        for scene in self.scenes:
+
+            if scene.id == scene_id:
+
+                return scene
+
+        return None
+
+    def get_all(self):
+
+        return self.scenes
+
+    def clear(self):
+
+        self.scenes.clear()
+
+================================================================================
+Файл: lordwolf/services/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/services/ai_service.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/services/movie_service.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/services/project_service.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/ui/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/ui/background_panel.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 65
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+
+File:
+lordwolf/ui/background_panel.py
+
+Version:
+0.0.1
+
+Purpose:
+Панель фонів для відображення результатів Background AI
+"""
+
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QListWidget,
+    QLabel
+)
+
+
+class BackgroundPanel(QWidget):
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+
+        self.backgrounds = []
+
+        self.init_ui()
+
+    def init_ui(self):
+
+        self.layout = QVBoxLayout(self)
+
+        self.title = QLabel("🌲 Фони")
+
+        self.list_widget = QListWidget()
+
+        self.layout.addWidget(self.title)
+        self.layout.addWidget(self.list_widget)
+
+    def update_backgrounds(self, backgrounds):
+
+        self.backgrounds = backgrounds
+
+        self.list_widget.clear()
+
+        if not backgrounds:
+
+            self.list_widget.addItem("Немає фонів")
+
+            return
+
+        for background in backgrounds:
+
+            if hasattr(background, "name"):
+
+                name = background.name
+
+            else:
+
+                name = str(background)
+
+            self.list_widget.addItem(name)
+
+================================================================================
+Файл: lordwolf/ui/character_panel.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 61
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+
+File:
+lordwolf/ui/character_panel.py
+
+Version:
+0.0.1
+
+Purpose:
+Панель персонажів для відображення результатів Character AI
+"""
+
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QListWidget,
+    QLabel
+)
+
+
+class CharacterPanel(QWidget):
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+
+        self.characters = []
+
+        self.init_ui()
+
+    def init_ui(self):
+
+        self.layout = QVBoxLayout(self)
+
+        self.title = QLabel("🎭 Персонажі")
+        self.list_widget = QListWidget()
+
+        self.layout.addWidget(self.title)
+        self.layout.addWidget(self.list_widget)
+
+    # 🔥 НОВИЙ МЕТОД ДЛЯ MAIN WINDOW
+    def update_characters(self, characters):
+
+        self.characters = characters
+
+        self.list_widget.clear()
+
+        if not characters:
+            self.list_widget.addItem("Немає персонажів")
+            return
+
+        for char in characters:
+
+            # підтримка як об'єкта, так і строки
+            if hasattr(char, "name"):
+                name = char.name
+            else:
+                name = str(char)
+
+            self.list_widget.addItem(name)
+
+================================================================================
+Файл: lordwolf/ui/main_window.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 214
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QDockWidget,
+    QMessageBox
+)
+from PySide6.QtCore import Qt
+
+from lordwolf.core.config import *
+from lordwolf.core.logger import Logger
+
+from lordwolf.engines.script_engine import ScriptEngine
+
+from lordwolf.ui.toolbar import MainToolBar
+from lordwolf.ui.script_editor import ScriptEditor
+from lordwolf.ui.project_panel import ProjectPanel
+from lordwolf.ui.character_panel import CharacterPanel
+from lordwolf.ui.background_panel import BackgroundPanel
+from lordwolf.ui.timeline import TimelinePanel
+from lordwolf.ui.render_panel import RenderPanel
+
+
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+
+        super().__init__()
+
+        Logger.info("Starting Main Window")
+
+        self.setWindowTitle(APP_NAME)
+
+        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+        # 🔥 ENGINE
+        self.script_engine = ScriptEngine()
+
+        self.create_widgets()
+        self.create_toolbar()
+        self.create_layout()
+        self.connect_signals()
+
+    def create_widgets(self):
+
+        self.script_editor = ScriptEditor()
+
+        self.project_panel = ProjectPanel()
+
+        self.character_panel = CharacterPanel()
+
+        self.background_panel = BackgroundPanel()
+
+        self.timeline_panel = TimelinePanel()
+
+        self.render_panel = RenderPanel()
+
+    def create_toolbar(self):
+
+        self.toolbar = MainToolBar()
+
+        self.addToolBar(self.toolbar)
+
+    def create_layout(self):
+
+        self.setCentralWidget(self.script_editor)
+
+        # Проєкти
+        project_dock = QDockWidget("📁 Проєкти", self)
+        project_dock.setWidget(self.project_panel)
+        self.addDockWidget(Qt.LeftDockWidgetArea, project_dock)
+
+        # Персонажі
+        character_dock = QDockWidget("🎭 Персонажі", self)
+        character_dock.setWidget(self.character_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, character_dock)
+
+        # Фони
+        background_dock = QDockWidget("🌲 Фони", self)
+        background_dock.setWidget(self.background_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, background_dock)
+
+        self.tabifyDockWidget(character_dock, background_dock)
+
+        # Таймлайн
+        timeline_dock = QDockWidget("🎬 Таймлайн", self)
+        timeline_dock.setWidget(self.timeline_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, timeline_dock)
+
+        # Рендер
+        render_dock = QDockWidget("📹 Рендер", self)
+        render_dock.setWidget(self.render_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, render_dock)
+
+        self.tabifyDockWidget(timeline_dock, render_dock)
+
+    def connect_signals(self):
+
+        self.toolbar.newProject.connect(self.new_project)
+        self.toolbar.openProject.connect(self.open_project)
+        self.toolbar.saveProject.connect(self.save_project)
+        self.toolbar.generateMovie.connect(self.generate_movie)
+        self.toolbar.settings.connect(self.show_settings)
+
+        self.script_editor.analyzeRequested.connect(self.analyze_script)
+        self.script_editor.generateRequested.connect(self.generate_movie_from_script)
+
+    # -----------------------------
+    # UI ACTIONS
+    # -----------------------------
+
+    def new_project(self):
+
+        Logger.info("New Project")
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Новий проєкт створено (поки що заглушка)"
+        )
+
+    def open_project(self):
+
+        Logger.info("Open Project")
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Відкрити проєкт (поки що заглушка)"
+        )
+
+    def save_project(self):
+
+        Logger.info("Save Project")
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Зберегти проєкт (поки що заглушка)"
+        )
+
+    def generate_movie(self):
+
+        Logger.info("Generate Movie")
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Генерація мультфільму (буде реалізовано далі)"
+        )
+
+    def show_settings(self):
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Налаштування (поки що заглушка)"
+        )
+
+    # -----------------------------
+    # MAIN PIPELINE
+    # -----------------------------
+
+    def analyze_script(self, script):
+
+        Logger.info("Analyze Script")
+
+        project = self.script_engine.process(script)
+
+        # 🔥 оновлення UI
+        self.update_ui_from_project(project)
+
+        self.script_editor.set_status(
+            "Сценарій проаналізовано і перетворено в проект"
+        )
+
+    def generate_movie_from_script(self, script):
+
+        Logger.info("Generate Movie From Script")
+
+        project = self.script_engine.process(script)
+
+        self.update_ui_from_project(project)
+
+        self.script_editor.set_status(
+            "Проект готовий до генерації відео"
+        )
+
+    # -----------------------------
+    # UI UPDATE ENGINE
+    # -----------------------------
+
+    def update_ui_from_project(self, project):
+
+        # підтримка dict або object
+        characters = self._safe_get(project, "characters", [])
+        backgrounds = self._safe_get(project, "backgrounds", [])
+        scenes = self._safe_get(project, "scenes", [])
+
+        self.character_panel.update_characters(characters)
+        self.background_panel.update_backgrounds(backgrounds)
+        self.timeline_panel.update_scenes(scenes)
+
+    def _safe_get(self, obj, key, default):
+
+        """
+        Підтримка dict і object одночасно
+        """
+
+        if obj is None:
+            return default
+
+        if isinstance(obj, dict):
+            return obj.get(key, default)
+
+        return getattr(obj, key, default)
+
+================================================================================
+Файл: lordwolf/ui/menu.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/ui/project_panel.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 91
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class ProjectPanel(QWidget):
+    """
+    Панель проєктів.
+    """
+
+    newProject = Signal()
+    openProject = Signal()
+    deleteProject = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("📁 Проєкти")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.project_list = QListWidget()
+
+        layout.addWidget(self.project_list)
+
+        buttons = QHBoxLayout()
+
+        self.new_button = QPushButton("Новий")
+
+        self.open_button = QPushButton("Відкрити")
+
+        self.delete_button = QPushButton("Видалити")
+
+        buttons.addWidget(self.new_button)
+        buttons.addWidget(self.open_button)
+        buttons.addWidget(self.delete_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.new_button.clicked.connect(self.newProject.emit)
+
+        self.open_button.clicked.connect(self.openProject.emit)
+
+        self.delete_button.clicked.connect(self.delete_selected)
+
+    def delete_selected(self):
+
+        item = self.project_list.currentItem()
+
+        if item is None:
+            return
+
+        self.deleteProject.emit(item.text())
+
+    def add_project(self, name):
+
+        self.project_list.addItem(name)
+
+    def clear(self):
+
+        self.project_list.clear()
+
+    def current_project(self):
+
+        item = self.project_list.currentItem()
+
+        if item is None:
+            return None
+
+        return item.text()
+
+================================================================================
+Файл: lordwolf/ui/render_panel.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 71
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QPushButton,
+    QProgressBar,
+    QTextEdit
+)
+from PySide6.QtCore import Signal
+
+
+class RenderPanel(QWidget):
+    """
+    Панель рендерингу мультфільму.
+    """
+
+    startRender = Signal()
+    stopRender = Signal()
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("📹 Рендер мультфільму")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.progress = QProgressBar()
+        self.progress.setValue(0)
+
+        layout.addWidget(self.progress)
+
+        self.log = QTextEdit()
+        self.log.setReadOnly(True)
+
+        layout.addWidget(self.log)
+
+        self.render_button = QPushButton("▶ Почати рендер")
+        self.stop_button = QPushButton("■ Зупинити")
+
+        layout.addWidget(self.render_button)
+        layout.addWidget(self.stop_button)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.render_button.clicked.connect(self.startRender.emit)
+        self.stop_button.clicked.connect(self.stopRender.emit)
+
+    def add_log(self, text):
+
+        self.log.append(text)
+
+    def set_progress(self, value):
+
+        self.progress.setValue(value)
+
+    def clear_log(self):
+
+        self.log.clear()
+
+================================================================================
+Файл: lordwolf/ui/script_editor.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 120
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QTextEdit,
+    QPushButton,
+    QLabel,
+)
+from PySide6.QtCore import Signal
+
+
+class ScriptEditor(QWidget):
+    """
+    Редактор сценарію LordWolf AI Studio.
+    """
+
+    analyzeRequested = Signal(str)
+    generateRequested = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        main_layout = QVBoxLayout()
+
+        title = QLabel("📝 Редактор сценарію")
+        title.setStyleSheet("""
+            font-size:20px;
+            font-weight:bold;
+        """)
+
+        main_layout.addWidget(title)
+
+        self.editor = QTextEdit()
+
+        self.editor.setPlaceholderText(
+"""Напишіть сценарій...
+
+Приклад:
+
+СЦЕНА 1
+
+Вовк сидить біля великого каміна.
+
+У двері стукають.
+
+Заходить блондинка.
+
+Вони починають розмову.
+"""
+        )
+
+        main_layout.addWidget(self.editor)
+
+        button_layout = QHBoxLayout()
+
+        self.analyze_button = QPushButton("🔍 Аналізувати сценарій")
+        self.generate_button = QPushButton("🎬 Створити мультфільм")
+        self.clear_button = QPushButton("🗑 Очистити")
+
+        button_layout.addWidget(self.analyze_button)
+        button_layout.addWidget(self.generate_button)
+        button_layout.addWidget(self.clear_button)
+
+        main_layout.addLayout(button_layout)
+
+        self.status = QLabel("Статус: Готовий до роботи.")
+
+        self.status.setStyleSheet("""
+            padding:6px;
+            border:1px solid gray;
+        """)
+
+        main_layout.addWidget(self.status)
+
+        self.setLayout(main_layout)
+
+    def connect_signals(self):
+
+        self.analyze_button.clicked.connect(self.analyze_script)
+
+        self.generate_button.clicked.connect(self.generate_movie)
+
+        self.clear_button.clicked.connect(self.editor.clear)
+
+    def analyze_script(self):
+
+        text = self.editor.toPlainText()
+
+        self.status.setText("Статус: Аналіз сценарію...")
+
+        self.analyzeRequested.emit(text)
+
+    def generate_movie(self):
+
+        text = self.editor.toPlainText()
+
+        self.status.setText("Статус: Створення мультфільму...")
+
+        self.generateRequested.emit(text)
+
+    def get_script(self):
+
+        return self.editor.toPlainText()
+
+    def set_script(self, text):
+
+        self.editor.setPlainText(text)
+
+    def clear(self):
+
+        self.editor.clear()
+
+    def set_status(self, text):
+
+        self.status.setText(f"Статус: {text}")
+
+================================================================================
+Файл: lordwolf/ui/timeline.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 66
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+
+File:
+lordwolf/ui/timeline.py
+
+Version:
+0.0.1
+
+Purpose:
+Панель таймлайну для відображення сцен мультфільму
+"""
+
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QListWidget,
+    QLabel
+)
+
+
+class TimelinePanel(QWidget):
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+
+        self.scenes = []
+
+        self.init_ui()
+
+    def init_ui(self):
+
+        self.layout = QVBoxLayout(self)
+
+        self.title = QLabel("🎬 Таймлайн")
+
+        self.list_widget = QListWidget()
+
+        self.layout.addWidget(self.title)
+        self.layout.addWidget(self.list_widget)
+
+    def update_scenes(self, scenes):
+
+        self.scenes = scenes
+
+        self.list_widget.clear()
+
+        if not scenes:
+
+            self.list_widget.addItem("Немає сцен")
+
+            return
+
+        for scene in scenes:
+
+            if hasattr(scene, "number"):
+
+                title = getattr(scene, "title", "")
+                self.list_widget.addItem(
+                    f"Сцена {scene.number}: {title}"
+                )
+
+            else:
+
+                self.list_widget.addItem(str(scene))
+
+================================================================================
+Файл: lordwolf/ui/toolbar.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 50
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import QToolBar
+from PySide6.QtGui import QAction
+from PySide6.QtCore import Signal
+
+
+class MainToolBar(QToolBar):
+    """
+    Головна панель інструментів LordWolf AI Studio
+    """
+
+    newProject = Signal()
+    openProject = Signal()
+    saveProject = Signal()
+    generateMovie = Signal()
+    settings = Signal()
+
+    def __init__(self):
+        super().__init__("Головна панель")
+
+        self.build_toolbar()
+
+    def build_toolbar(self):
+
+        self.setMovable(False)
+
+        action_new = QAction("📁 Новий", self)
+        action_open = QAction("📂 Відкрити", self)
+        action_save = QAction("💾 Зберегти", self)
+        action_generate = QAction("🎬 Створити", self)
+        action_settings = QAction("⚙ Налаштування", self)
+
+        self.addAction(action_new)
+        self.addSeparator()
+
+        self.addAction(action_open)
+        self.addSeparator()
+
+        self.addAction(action_save)
+        self.addSeparator()
+
+        self.addAction(action_generate)
+        self.addSeparator()
+
+        self.addAction(action_settings)
+
+        action_new.triggered.connect(self.newProject.emit)
+        action_open.triggered.connect(self.openProject.emit)
+        action_save.triggered.connect(self.saveProject.emit)
+        action_generate.triggered.connect(self.generateMovie.emit)
+        action_settings.triggered.connect(self.settings.emit)
+
+================================================================================
+Файл: lordwolf/utils/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/utils/audio_utils.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/utils/file_utils.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/utils/image_utils.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/utils/video_utils.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/video/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/video/camera.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/video/export.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/video/renderer.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: lordwolf/widgets/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/animation/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/animation/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/image/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/image/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/llm/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/llm/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/music/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/music/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/plugin_base.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/plugin_manager.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/video/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/video/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/voice/__init__.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: plugins/voice/loader.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: project_snapshot.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 188
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+
+Project Snapshot Generator
+
+Створює повний текстовий знімок проєкту:
+- структуру папок
+- усі файли
+- статус (порожній/непорожній)
+- кількість рядків
+- повний вміст файлів
+"""
+
+from pathlib import Path
+
+ROOT = Path(__file__).parent.resolve()
+
+OUTPUT = ROOT / "project_snapshot.txt"
+
+IGNORE_DIRS = {
+    "__pycache__",
+    ".git",
+    ".idea",
+    ".vscode",
+    ".venv",
+    "venv",
+    "env",
+    ".pytest_cache",
+}
+
+IGNORE_EXT = {
+    ".pyc",
+    ".pyo",
+    ".exe",
+    ".dll",
+    ".so",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".mp3",
+    ".wav",
+    ".ogg",
+    ".mp4",
+    ".avi",
+    ".mov",
+    ".zip",
+    ".7z",
+}
+
+
+def build_tree(path: Path, prefix=""):
+
+    lines = []
+
+    entries = sorted(
+        path.iterdir(),
+        key=lambda p: (p.is_file(), p.name.lower())
+    )
+
+    entries = [
+        e for e in entries
+        if e.name not in IGNORE_DIRS
+    ]
+
+    for index, entry in enumerate(entries):
+
+        last = index == len(entries) - 1
+
+        connector = "└── " if last else "├── "
+
+        lines.append(prefix + connector + entry.name)
+
+        if entry.is_dir():
+
+            extension = "    " if last else "│   "
+
+            lines.extend(
+                build_tree(entry, prefix + extension)
+            )
+
+    return lines
+
+
+python_files = []
+other_files = []
+
+for file in ROOT.rglob("*"):
+
+    if not file.is_file():
+        continue
+
+    if any(part in IGNORE_DIRS for part in file.parts):
+        continue
+
+    if file.suffix.lower() in IGNORE_EXT:
+        continue
+
+    rel = file.relative_to(ROOT)
+
+    if file.suffix == ".py":
+        python_files.append(rel)
+    else:
+        other_files.append(rel)
+
+python_files.sort()
+other_files.sort()
+
+total = 0
+filled = 0
+empty = 0
+
+with open(OUTPUT, "w", encoding="utf-8") as out:
+
+    out.write("=" * 80 + "\n")
+    out.write("LORDWOLF AI STUDIO\n")
+    out.write("PROJECT SNAPSHOT\n")
+    out.write("=" * 80 + "\n\n")
+
+    out.write("СТРУКТУРА ПРОЄКТУ\n")
+    out.write("-" * 80 + "\n")
+
+    out.write(ROOT.name + "\n")
+
+    for line in build_tree(ROOT):
+        out.write(line + "\n")
+
+    out.write("\n\n")
+
+    files = python_files + other_files
+
+    for rel in files:
+
+        total += 1
+
+        full = ROOT / rel
+
+        text = ""
+
+        try:
+
+            text = full.read_text(
+                encoding="utf-8",
+                errors="replace"
+            )
+
+        except Exception as e:
+
+            text = f"<<Помилка читання: {e}>>"
+
+        rows = len(text.splitlines())
+
+        status = "НЕ ПУСТИЙ"
+
+        if text.strip() == "":
+            status = "ПУСТИЙ"
+            empty += 1
+        else:
+            filled += 1
+
+        out.write("=" * 80 + "\n")
+        out.write(f"Файл: {rel.as_posix()}\n")
+        out.write("=" * 80 + "\n")
+        out.write(f"Статус : {status}\n")
+        out.write(f"Рядків : {rows}\n")
+        out.write("-" * 80 + "\n")
+        out.write("ВМІСТ ФАЙЛУ\n")
+        out.write("-" * 80 + "\n")
+
+        if text.strip():
+            out.write(text)
+        else:
+            out.write("(порожній файл)")
+
+        out.write("\n\n")
+
+    out.write("=" * 80 + "\n")
+    out.write("СТАТИСТИКА\n")
+    out.write("=" * 80 + "\n")
+    out.write(f"Всього файлів : {total}\n")
+    out.write(f"Заповнених    : {filled}\n")
+    out.write(f"Порожніх      : {empty}\n")
+
+print()
+print("========================================")
+print("Project snapshot створено успішно.")
+print(f"Файл: {OUTPUT}")
+print("========================================")
+
+================================================================================
+Файл: comands.txt
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 3
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+python project_snapshot.py 
+python -m compileall .
+python app.py
+
+================================================================================
+Файл: LICENSE
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 21
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2026 jobananada12
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+================================================================================
+Файл: README.md
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 2
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+# LordWolfAI
+Open-source AI platform for creating animated movies.
+
+
+================================================================================
+Файл: requirements.txt
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
+
+================================================================================
+Файл: ui_dump.txt
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 444
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+========== character_panel.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class CharacterPanel(QWidget):
+    """
+    Панель персонажів.
+    """
+
+    addCharacter = Signal()
+    editCharacter = Signal(str)
+    removeCharacter = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🎭 Персонажі")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.character_list = QListWidget()
+
+        layout.addWidget(self.character_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕ Додати")
+        self.edit_button = QPushButton("✏ Редагувати")
+        self.remove_button = QPushButton("🗑 Видалити")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.edit_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addCharacter.emit)
+
+        self.edit_button.clicked.connect(self.edit_selected)
+
+        self.remove_button.clicked.connect(self.remove_selected)
+
+    def edit_selected(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+            self.editCharacter.emit(item.text())
+
+    def remove_selected(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+            self.removeCharacter.emit(item.text())
+
+    def add_character(self, name):
+
+        self.character_list.addItem(name)
+
+    def clear(self):
+
+        self.character_list.clear()
+
+    def current_character(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+
+            return item.text()
+
+        return None
+
+========== background_panel.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class BackgroundPanel(QWidget):
+    """
+    Панель фонів.
+    """
+
+    addBackground = Signal()
+    editBackground = Signal(str)
+    removeBackground = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🌲 Фони")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.background_list = QListWidget()
+
+        layout.addWidget(self.background_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕ Додати")
+        self.edit_button = QPushButton("✏ Редагувати")
+        self.remove_button = QPushButton("🗑 Видалити")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.edit_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addBackground.emit)
+        self.edit_button.clicked.connect(self.edit_selected)
+        self.remove_button.clicked.connect(self.remove_selected)
+
+    def edit_selected(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            self.editBackground.emit(item.text())
+
+    def remove_selected(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            self.removeBackground.emit(item.text())
+
+    def add_background(self, name):
+
+        self.background_list.addItem(name)
+
+    def clear(self):
+
+        self.background_list.clear()
+
+    def current_background(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            return item.text()
+
+        return None
+
+========== timeline.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class TimelinePanel(QWidget):
+    """
+    Панель сцен (таймлайн).
+    """
+
+    addScene = Signal()
+    removeScene = Signal(str)
+    moveUp = Signal(str)
+    moveDown = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🎬 Таймлайн")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.scene_list = QListWidget()
+
+        layout.addWidget(self.scene_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕")
+        self.up_button = QPushButton("⬆")
+        self.down_button = QPushButton("⬇")
+        self.remove_button = QPushButton("🗑")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.up_button)
+        buttons.addWidget(self.down_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addScene.emit)
+        self.remove_button.clicked.connect(self.remove_selected)
+        self.up_button.clicked.connect(self.move_up)
+        self.down_button.clicked.connect(self.move_down)
+
+    def remove_selected(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.removeScene.emit(item.text())
+
+    def move_up(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.moveUp.emit(item.text())
+
+    def move_down(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.moveDown.emit(item.text())
+
+    def add_scene(self, name):
+
+        self.scene_list.addItem(name)
+
+    def clear(self):
+
+        self.scene_list.clear()
+
+    def current_scene(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            return item.text()
+
+        return None
+
+========== main_window.py ==========
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QDockWidget,
+    QMessageBox
+)
+from PySide6.QtCore import Qt
+
+from lordwolf.core.config import *
+from lordwolf.core.logger import Logger
+
+from lordwolf.engines.script_engine import ScriptEngine
+
+from lordwolf.ui.toolbar import MainToolBar
+from lordwolf.ui.script_editor import ScriptEditor
+from lordwolf.ui.project_panel import ProjectPanel
+from lordwolf.ui.character_panel import CharacterPanel
+from lordwolf.ui.background_panel import BackgroundPanel
+from lordwolf.ui.timeline import TimelinePanel
+from lordwolf.ui.render_panel import RenderPanel
+
+
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+
+        super().__init__()
+
+        Logger.info("Starting Main Window")
+
+        self.setWindowTitle(APP_NAME)
+
+        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+        # 🔥 ENGINE
+        self.script_engine = ScriptEngine()
+
+        self.create_widgets()
+        self.create_toolbar()
+        self.create_layout()
+        self.connect_signals()
+
+    def create_widgets(self):
+
+        self.script_editor = ScriptEditor()
+
+        self.project_panel = ProjectPanel()
+        self.character_panel = CharacterPanel()
+        self.background_panel = BackgroundPanel()
+        self.timeline_panel = TimelinePanel()
+        self.render_panel = RenderPanel()
+
+    def create_toolbar(self):
+
+        self.toolbar = MainToolBar()
+        self.addToolBar(self.toolbar)
+
+    def create_layout(self):
+
+        self.setCentralWidget(self.script_editor)
+
+        # Проєкти
+        project_dock = QDockWidget("📁 Проєкти", self)
+        project_dock.setWidget(self.project_panel)
+        self.addDockWidget(Qt.LeftDockWidgetArea, project_dock)
+
+        # Персонажі
+        character_dock = QDockWidget("🎭 Персонажі", self)
+        character_dock.setWidget(self.character_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, character_dock)
+
+        # Фони
+        background_dock = QDockWidget("🌲 Фони", self)
+        background_dock.setWidget(self.background_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, background_dock)
+
+        self.tabifyDockWidget(character_dock, background_dock)
+
+        # Таймлайн
+        timeline_dock = QDockWidget("🎬 Таймлайн", self)
+        timeline_dock.setWidget(self.timeline_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, timeline_dock)
+
+        # Рендер
+        render_dock = QDockWidget("📹 Рендер", self)
+        render_dock.setWidget(self.render_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, render_dock)
+
+        self.tabifyDockWidget(timeline_dock, render_dock)
+
+    def connect_signals(self):
+
+        self.toolbar.newProject.connect(self.new_project)
+        self.toolbar.openProject.connect(self.open_project)
+        self.toolbar.saveProject.connect(self.save_project)
+        self.toolbar.generateMovie.connect(self.generate_movie)
+        self.toolbar.settings.connect(self.show_settings)
+
+        self.script_editor.analyzeRequested.connect(self.analyze_script)
+        self.script_editor.generateRequested.connect(self.generate_movie_from_script)
+
+    def new_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Новий проєкт")
+
+    def open_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Відкрити проєкт")
+
+    def save_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Зберегти проєкт")
+
+    def generate_movie(self):
+
+        QMessageBox.information(self, APP_NAME, "Генерація (поки що в розробці)")
+
+    def show_settings(self):
+
+        QMessageBox.information(self, APP_NAME, "Налаштування")
+
+    # 🔥 ГОЛОВНЕ ЗМІНА
+    def analyze_script(self, script):
+
+        Logger.info("Analyze Script")
+
+        project = self.script_engine.process(script)
+
+        self.script_editor.set_status(
+            f"Сцени: {project.scene_count()}"
+        )
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            f"Проєкт створено!\n\n"
+            f"Сцен: {project.scene_count()}\n"
+            f"Персонажів: {project.character_count()}\n"
+            f"Фонів: {project.background_count()}"
+        )
+
+    def generate_movie_from_script(self, script):
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Генерація мультфільму буде реалізована далі"
+        )
+
+
+================================================================================
+СТАТИСТИКА
+================================================================================
+Всього файлів : 90
+Заповнених    : 38
+Порожніх      : 52

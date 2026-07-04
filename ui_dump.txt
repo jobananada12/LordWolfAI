@@ -1,0 +1,444 @@
+========== character_panel.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class CharacterPanel(QWidget):
+    """
+    Панель персонажів.
+    """
+
+    addCharacter = Signal()
+    editCharacter = Signal(str)
+    removeCharacter = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🎭 Персонажі")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.character_list = QListWidget()
+
+        layout.addWidget(self.character_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕ Додати")
+        self.edit_button = QPushButton("✏ Редагувати")
+        self.remove_button = QPushButton("🗑 Видалити")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.edit_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addCharacter.emit)
+
+        self.edit_button.clicked.connect(self.edit_selected)
+
+        self.remove_button.clicked.connect(self.remove_selected)
+
+    def edit_selected(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+            self.editCharacter.emit(item.text())
+
+    def remove_selected(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+            self.removeCharacter.emit(item.text())
+
+    def add_character(self, name):
+
+        self.character_list.addItem(name)
+
+    def clear(self):
+
+        self.character_list.clear()
+
+    def current_character(self):
+
+        item = self.character_list.currentItem()
+
+        if item:
+
+            return item.text()
+
+        return None
+
+========== background_panel.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class BackgroundPanel(QWidget):
+    """
+    Панель фонів.
+    """
+
+    addBackground = Signal()
+    editBackground = Signal(str)
+    removeBackground = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🌲 Фони")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.background_list = QListWidget()
+
+        layout.addWidget(self.background_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕ Додати")
+        self.edit_button = QPushButton("✏ Редагувати")
+        self.remove_button = QPushButton("🗑 Видалити")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.edit_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addBackground.emit)
+        self.edit_button.clicked.connect(self.edit_selected)
+        self.remove_button.clicked.connect(self.remove_selected)
+
+    def edit_selected(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            self.editBackground.emit(item.text())
+
+    def remove_selected(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            self.removeBackground.emit(item.text())
+
+    def add_background(self, name):
+
+        self.background_list.addItem(name)
+
+    def clear(self):
+
+        self.background_list.clear()
+
+    def current_background(self):
+
+        item = self.background_list.currentItem()
+
+        if item:
+            return item.text()
+
+        return None
+
+========== timeline.py ==========
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QHBoxLayout
+)
+from PySide6.QtCore import Signal
+
+
+class TimelinePanel(QWidget):
+    """
+    Панель сцен (таймлайн).
+    """
+
+    addScene = Signal()
+    removeScene = Signal(str)
+    moveUp = Signal(str)
+    moveDown = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("🎬 Таймлайн")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.scene_list = QListWidget()
+
+        layout.addWidget(self.scene_list)
+
+        buttons = QHBoxLayout()
+
+        self.add_button = QPushButton("➕")
+        self.up_button = QPushButton("⬆")
+        self.down_button = QPushButton("⬇")
+        self.remove_button = QPushButton("🗑")
+
+        buttons.addWidget(self.add_button)
+        buttons.addWidget(self.up_button)
+        buttons.addWidget(self.down_button)
+        buttons.addWidget(self.remove_button)
+
+        layout.addLayout(buttons)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.add_button.clicked.connect(self.addScene.emit)
+        self.remove_button.clicked.connect(self.remove_selected)
+        self.up_button.clicked.connect(self.move_up)
+        self.down_button.clicked.connect(self.move_down)
+
+    def remove_selected(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.removeScene.emit(item.text())
+
+    def move_up(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.moveUp.emit(item.text())
+
+    def move_down(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            self.moveDown.emit(item.text())
+
+    def add_scene(self, name):
+
+        self.scene_list.addItem(name)
+
+    def clear(self):
+
+        self.scene_list.clear()
+
+    def current_scene(self):
+
+        item = self.scene_list.currentItem()
+
+        if item:
+            return item.text()
+
+        return None
+
+========== main_window.py ==========
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QDockWidget,
+    QMessageBox
+)
+from PySide6.QtCore import Qt
+
+from lordwolf.core.config import *
+from lordwolf.core.logger import Logger
+
+from lordwolf.engines.script_engine import ScriptEngine
+
+from lordwolf.ui.toolbar import MainToolBar
+from lordwolf.ui.script_editor import ScriptEditor
+from lordwolf.ui.project_panel import ProjectPanel
+from lordwolf.ui.character_panel import CharacterPanel
+from lordwolf.ui.background_panel import BackgroundPanel
+from lordwolf.ui.timeline import TimelinePanel
+from lordwolf.ui.render_panel import RenderPanel
+
+
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+
+        super().__init__()
+
+        Logger.info("Starting Main Window")
+
+        self.setWindowTitle(APP_NAME)
+
+        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+        # 🔥 ENGINE
+        self.script_engine = ScriptEngine()
+
+        self.create_widgets()
+        self.create_toolbar()
+        self.create_layout()
+        self.connect_signals()
+
+    def create_widgets(self):
+
+        self.script_editor = ScriptEditor()
+
+        self.project_panel = ProjectPanel()
+        self.character_panel = CharacterPanel()
+        self.background_panel = BackgroundPanel()
+        self.timeline_panel = TimelinePanel()
+        self.render_panel = RenderPanel()
+
+    def create_toolbar(self):
+
+        self.toolbar = MainToolBar()
+        self.addToolBar(self.toolbar)
+
+    def create_layout(self):
+
+        self.setCentralWidget(self.script_editor)
+
+        # Проєкти
+        project_dock = QDockWidget("📁 Проєкти", self)
+        project_dock.setWidget(self.project_panel)
+        self.addDockWidget(Qt.LeftDockWidgetArea, project_dock)
+
+        # Персонажі
+        character_dock = QDockWidget("🎭 Персонажі", self)
+        character_dock.setWidget(self.character_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, character_dock)
+
+        # Фони
+        background_dock = QDockWidget("🌲 Фони", self)
+        background_dock.setWidget(self.background_panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, background_dock)
+
+        self.tabifyDockWidget(character_dock, background_dock)
+
+        # Таймлайн
+        timeline_dock = QDockWidget("🎬 Таймлайн", self)
+        timeline_dock.setWidget(self.timeline_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, timeline_dock)
+
+        # Рендер
+        render_dock = QDockWidget("📹 Рендер", self)
+        render_dock.setWidget(self.render_panel)
+        self.addDockWidget(Qt.BottomDockWidgetArea, render_dock)
+
+        self.tabifyDockWidget(timeline_dock, render_dock)
+
+    def connect_signals(self):
+
+        self.toolbar.newProject.connect(self.new_project)
+        self.toolbar.openProject.connect(self.open_project)
+        self.toolbar.saveProject.connect(self.save_project)
+        self.toolbar.generateMovie.connect(self.generate_movie)
+        self.toolbar.settings.connect(self.show_settings)
+
+        self.script_editor.analyzeRequested.connect(self.analyze_script)
+        self.script_editor.generateRequested.connect(self.generate_movie_from_script)
+
+    def new_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Новий проєкт")
+
+    def open_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Відкрити проєкт")
+
+    def save_project(self):
+
+        QMessageBox.information(self, APP_NAME, "Зберегти проєкт")
+
+    def generate_movie(self):
+
+        QMessageBox.information(self, APP_NAME, "Генерація (поки що в розробці)")
+
+    def show_settings(self):
+
+        QMessageBox.information(self, APP_NAME, "Налаштування")
+
+    # 🔥 ГОЛОВНЕ ЗМІНА
+    def analyze_script(self, script):
+
+        Logger.info("Analyze Script")
+
+        project = self.script_engine.process(script)
+
+        self.script_editor.set_status(
+            f"Сцени: {project.scene_count()}"
+        )
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            f"Проєкт створено!\n\n"
+            f"Сцен: {project.scene_count()}\n"
+            f"Персонажів: {project.character_count()}\n"
+            f"Фонів: {project.background_count()}"
+        )
+
+    def generate_movie_from_script(self, script):
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            "Генерація мультфільму буде реалізована далі"
+        )
