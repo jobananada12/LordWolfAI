@@ -66,9 +66,9 @@ class ScriptAI:
 
             current_scene.add_action(text)
 
-            self.detect_characters(text)
+            self.detect_characters(text, current_scene)
 
-            self.detect_backgrounds(text)
+            self.detect_backgrounds(text, current_scene)
 
         if current_scene is not None:
 
@@ -76,11 +76,9 @@ class ScriptAI:
 
         return self.get_result()
 
-    def detect_characters(self, text: str):
+    def detect_characters(self, text: str, scene: Scene):
 
         names = [
-
-            "вовк",
 
             "лорд вовк",
 
@@ -88,59 +86,79 @@ class ScriptAI:
 
             "брюнетка",
 
-            "король",
-
             "королева",
+
+            "король",
 
             "лицар",
 
             "чаклун",
 
-            "дракон"
+            "дракон",
+
+            "вовк"
 
         ]
 
         lower = text.lower()
 
+        consumed = lower
+
         for name in names:
 
-            if name in lower:
+            if name in consumed:
 
-                self.characters.add(name.title())
+                display_name = name.title()
 
-    def detect_backgrounds(self, text: str):
+                self.characters.add(display_name)
+
+                scene.add_character(display_name)
+
+                # Вирізаємо знайдену назву,
+                # щоб коротші не знайшлися всередині неї
+                consumed = consumed.replace(name, " " * len(name), 1)
+
+    def detect_backgrounds(self, text: str, scene: Scene):
 
         places = [
-
-            "замок",
-
-            "ліс",
-
-            "печера",
-
-            "дорога",
-
-            "поле",
-
-            "будинок",
 
             "кімната",
 
             "кабінет",
 
+            "будинок",
+
+            "печера",
+
+            "дорога",
+
             "палац",
 
-            "вежа"
+            "замок",
+
+            "поле",
+
+            "вежа",
+
+            "ліс"
 
         ]
 
         lower = text.lower()
 
+        consumed = lower
+
         for place in places:
 
-            if place in lower:
+            if place in consumed:
 
-                self.backgrounds.add(place.title())
+                display_name = place.title()
+
+                self.backgrounds.add(display_name)
+
+                scene.add_background(display_name)
+
+                consumed = consumed.replace(place, " " * len(place), 1)
 
     def get_result(self):
 
