@@ -3,58 +3,56 @@ LordWolf AI Studio
 Voice Engine
 """
 
-from dataclasses import dataclass
-
-
-@dataclass
-class VoiceTrack:
-
-    text: str
-
-    voice: str
-
-    speed: float = 1.0
-
-    pitch: float = 1.0
-
-    file_path: str = ""
+from pathlib import Path
+from gtts import gTTS
+import time
 
 
 class VoiceEngine:
     """
     Рушій озвучення персонажів.
+    Використовує gTTS для генерації голосу.
     """
 
-    def __init__(self):
+    def __init__(self, output_dir="audio_output"):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.audio_files = []
 
-        self.tracks = []
+    def generate_voice(self, text: str, voice_name: str = "Narrator") -> str:
+        """
+        Генерує аудіофайл з тексту.
+        """
+        clean_text = text.strip()
+        if not clean_text:
+            return ""
 
-    def add_voice(self, text, voice="Narrator", speed=1.0, pitch=1.0):
+        timestamp = int(time.time() * 1000)
+        filename = f"voice_{timestamp}.mp3"
+        filepath = self.output_dir / filename
 
-        track = VoiceTrack(
+        try:
+            tts = gTTS(text=clean_text, lang="uk", slow=False)
+            tts.save(str(filepath))
+            self.audio_files.append(str(filepath))
+            return str(filepath)
+        except Exception as e:
+            print(f"[ERROR] Не вдалося згенерувати голос: {e}")
+            return ""
 
-            text=text,
+    def generate_character_voice(self, text: str, character_name: str) -> str:
+        """
+        Генерує голос для конкретного персонажа.
+        """
+        return self.generate_voice(text, character_name)
 
-            voice=voice,
-
-            speed=speed,
-
-            pitch=pitch
-
-        )
-
-        self.tracks.append(track)
-
-        return track
-
-    def clear(self):
-
-        self.tracks.clear()
-
-    def get_tracks(self):
-
-        return self.tracks
-
-    def total_lines(self):
-
-        return len(self.tracks)
+    def clear_cache(self):
+        """
+        Видаляє всі згенеровані аудіофайли.
+        """
+        for filepath in self.audio_files:
+            try:
+                Path(filepath).unlink()
+            except:
+                pass
+        self.audio_files.clear()

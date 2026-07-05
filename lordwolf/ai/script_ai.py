@@ -3,7 +3,7 @@ LordWolf AI Studio
 Script AI
 """
 
-from typing import Dict
+from typing import Dict, Optional
 
 from lordwolf.data.scene import Scene
 
@@ -73,6 +73,10 @@ class ScriptAI:
         if current_scene is not None:
 
             self.scenes.append(current_scene)
+
+        # Визначаємо головних персонажів для кожної сцени
+        for scene in self.scenes:
+            self.detect_main_character(scene)
 
         return self.get_result()
 
@@ -159,6 +163,33 @@ class ScriptAI:
                 scene.add_background(display_name)
 
                 consumed = consumed.replace(place, " " * len(place), 1)
+
+    def detect_main_character(self, scene: Scene):
+        """
+        Визначає головного персонажа сцени.
+
+        Алгоритм:
+        1. Беремо перше речення (перший action)
+        2. Шукаємо в ньому персонажів зі списку scene.characters
+        3. Якщо знайшли - це головний персонаж сцени
+        4. Якщо ні - беремо першого персонажа зі списку
+        """
+
+        if not scene.actions:
+            return
+
+        # Беремо перше речення сцени
+        first_action = scene.actions[0]
+
+        # Шукаємо персонажів у першому реченні
+        for character in scene.characters:
+            if character.lower() in first_action.lower():
+                scene.main_character = character
+                return
+
+        # Якщо нікого не знайшли - беремо першого персонажа
+        if scene.characters:
+            scene.main_character = scene.characters[0]
 
     def get_result(self):
 

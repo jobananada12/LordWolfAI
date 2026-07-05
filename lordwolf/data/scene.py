@@ -38,6 +38,8 @@ class Scene:
 
     notes: str = ""
 
+    main_character: str = ""  # НОВЕ ПОЛЕ
+
     def add_action(self, action: str):
 
         if action:
@@ -94,11 +96,14 @@ class Scene:
 
         self.notes = ""
 
+        self.main_character = ""  # Очищаємо головного персонажа
+
     def __str__(self):
 
         return (
             f"Scene {self.number}: {self.title} "
             f"(Actions={len(self.actions)}, "
             f"Characters={len(self.characters)}, "
-            f"Backgrounds={len(self.backgrounds)})"
+            f"Backgrounds={len(self.backgrounds)}, "
+            f"Main Character={self.main_character})"
         )

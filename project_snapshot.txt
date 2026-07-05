@@ -8,12 +8,60 @@ PROJECT SNAPSHOT
 LordWolfAI
 ├── assets
 │   ├── backgrounds
+│   │   └── Lis.png
 │   ├── characters
-│   ├── fonts
-│   ├── icons
-│   ├── music
-│   ├── props
-│   └── sounds
+│   │   ├── Blondynka.png
+│   │   ├── Chaklun.png
+│   │   ├── Drakon.png
+│   │   └── Lord_Vovk.png
+│   └── props
+├── audio_output
+│   ├── voice_1783281388284.mp3
+│   ├── voice_1783281388561.mp3
+│   ├── voice_1783281388856.mp3
+│   ├── voice_1783281389132.mp3
+│   ├── voice_1783281389534.mp3
+│   ├── voice_1783281389761.mp3
+│   ├── voice_1783281390069.mp3
+│   ├── voice_1783281390690.mp3
+│   ├── voice_1783281390990.mp3
+│   ├── voice_1783281391304.mp3
+│   ├── voice_1783281391638.mp3
+│   ├── voice_1783281391840.mp3
+│   ├── voice_1783281392160.mp3
+│   ├── voice_1783281392485.mp3
+│   ├── voice_1783281392745.mp3
+│   ├── voice_1783281393015.mp3
+│   ├── voice_1783281393300.mp3
+│   ├── voice_1783281393610.mp3
+│   ├── voice_1783281393851.mp3
+│   ├── voice_1783281394204.mp3
+│   ├── voice_1783281394447.mp3
+│   ├── voice_1783281394775.mp3
+│   ├── voice_1783281395082.mp3
+│   ├── voice_1783281404414.mp3
+│   ├── voice_1783281404815.mp3
+│   ├── voice_1783281405054.mp3
+│   ├── voice_1783281405457.mp3
+│   ├── voice_1783281405733.mp3
+│   ├── voice_1783281406023.mp3
+│   ├── voice_1783281406264.mp3
+│   ├── voice_1783281406566.mp3
+│   ├── voice_1783281406788.mp3
+│   ├── voice_1783281407218.mp3
+│   ├── voice_1783281407486.mp3
+│   ├── voice_1783281407740.mp3
+│   ├── voice_1783281408036.mp3
+│   ├── voice_1783281408284.mp3
+│   ├── voice_1783281408603.mp3
+│   ├── voice_1783281408837.mp3
+│   ├── voice_1783281409175.mp3
+│   ├── voice_1783281409435.mp3
+│   ├── voice_1783281409725.mp3
+│   ├── voice_1783281410013.mp3
+│   ├── voice_1783281410269.mp3
+│   ├── voice_1783281410562.mp3
+│   └── voice_1783281410773.mp3
 ├── lordwolf
 │   ├── ai
 │   │   ├── __init__.py
@@ -21,6 +69,7 @@ LordWolfAI
 │   │   ├── background_ai.py
 │   │   ├── character_ai.py
 │   │   ├── director_ai.py
+│   │   ├── scene_ai.py
 │   │   ├── script_ai.py
 │   │   └── voice_ai.py
 │   ├── animation
@@ -78,6 +127,7 @@ LordWolfAI
 │   │   ├── main_window.py
 │   │   ├── menu.py
 │   │   ├── project_panel.py
+│   │   ├── render_panel.p
 │   │   ├── render_panel.py
 │   │   ├── script_editor.py
 │   │   ├── timeline.py
@@ -102,6 +152,8 @@ LordWolfAI
 │   ├── llm
 │   ├── music
 │   └── voice
+├── output
+│   └── lordwolf_movie.mp4
 ├── plugins
 │   ├── animation
 │   │   ├── __init__.py
@@ -131,7 +183,6 @@ LordWolfAI
 ├── LICENSE
 ├── project_snapshot.py
 ├── project_snapshot.txt
-├── project_snapshot.zip
 ├── README.md
 ├── requirements.txt
 └── ui_dump.txt
@@ -603,91 +654,165 @@ class CharacterAI:
 Файл: lordwolf/ai/director_ai.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 75
+Рядків : 139
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
-"""
-LordWolf AI Studio
-Director AI
-"""
-
+from pathlib import Path
 from lordwolf.ai.script_ai import ScriptAI
 from lordwolf.ai.character_ai import CharacterAI
 from lordwolf.ai.background_ai import BackgroundAI
 from lordwolf.ai.animation_ai import AnimationAI
 from lordwolf.ai.voice_ai import VoiceAI
-
 from lordwolf.data.project import MovieProject
+from lordwolf.engines.voice_engine import VoiceEngine
+from lordwolf.engines.image_engine import ImageEngine
+from lordwolf.engines.video_engine import VideoEngine
 
 
 class DirectorAI:
-    """
-    Головний координатор AI.
-
-    Створює MovieProject,
-    який потім передається всім Engines.
-    """
-
     def __init__(self):
-
         self.script_ai = ScriptAI()
-
         self.character_ai = CharacterAI()
-
         self.background_ai = BackgroundAI()
-
         self.animation_ai = AnimationAI()
-
         self.voice_ai = VoiceAI()
-
+        self.voice_engine = VoiceEngine()
+        self.image_engine = ImageEngine()
+        self.video_engine = VideoEngine()
         self.project = MovieProject()
+        self.dialog_list = []
 
     def create_movie(self, script):
-
+        print("[INFO] DirectorAI: Початок")
+        
+        # 🔥 ОЧИЩУЄМО ВСЕ ПЕРЕД СТВОРЕННЯМ НОВОГО ПРОЄКТУ
+        self.dialog_list = []
+        self.video_engine.clear()  # ← ОСЬ ЦЕ ВАЖЛИВО!
         self.project.clear()
-
         self.project.script = script
 
         result = self.script_ai.analyze(script)
-
         self.project.scenes = result["scenes"]
+        print(f"[INFO] ScriptAI: {result['scene_count']} сцен")
 
         for name in result["characters"]:
-
-            character = self.character_ai.create_character(name)
-
-            self.project.characters.append(character)
+            char = self.character_ai.create_character(name)
+            char.image_path = self.image_engine.generate_character(name)
+            self.project.characters.append(char)
 
         for name in result["backgrounds"]:
-
-            background = self.background_ai.create_background(name)
-
-            self.project.backgrounds.append(background)
+            bg = self.background_ai.create_background(name)
+            bg.image_path = self.image_engine.generate_background(name)
+            self.project.backgrounds.append(bg)
 
         self.project.animations = self.animation_ai.get_all()
-
         self.project.voices = self.voice_ai.get_all()
 
+        self._collect_dialogs()
+        self._generate_audio()
+        self._create_video()
+
+        print("[INFO] DirectorAI: Готово!")
         return self.project
 
-    def get_movie_project(self):
+    def _collect_dialogs(self):
+        for scene in self.project.scenes:
+            bg_name = None
+            if scene.backgrounds:
+                bg_name = scene.backgrounds[0]
+            elif self.project.backgrounds:
+                bg_name = self.project.backgrounds[0].name
 
-        return self.project
+            for action in scene.actions:
+                if ":" not in action:
+                    continue
+
+                speaker = None
+                text = action
+
+                for char in scene.characters:
+                    if char + ":" in text:
+                        speaker = char
+                        text = text.replace(char + ":", "").strip()
+                        break
+
+                if not speaker:
+                    speaker = scene.main_character or "Narrator"
+
+                if text:
+                    self.dialog_list.append({
+                        "speaker": speaker,
+                        "text": text,
+                        "background": bg_name,
+                        "audio_path": None
+                    })
+                    print(f"[DIALOG] {speaker}: {text[:40]}...")
+
+    def _generate_audio(self):
+        for i, dialog in enumerate(self.dialog_list):
+            audio_path = self.voice_engine.generate_character_voice(
+                dialog["text"], dialog["speaker"]
+            )
+            dialog["audio_path"] = audio_path
+            print(f"[AUDIO] {i+1:02d}: {dialog['speaker']} -> {Path(audio_path).name if audio_path else 'None'}")
+
+    def _create_video(self):
+        print(f"[INFO] Створення {len(self.dialog_list)} сцен")
+        for dialog in self.dialog_list:
+            speaker = dialog["speaker"]
+            audio_path = dialog["audio_path"]
+            bg_name = dialog["background"]
+
+            char_path = None
+            for char in self.project.characters:
+                if char.name == speaker:
+                    char_path = char.image_path
+                    break
+            if not char_path:
+                char_path = str(self.image_engine.characters_path / "default.png")
+
+            bg_path = None
+            if bg_name:
+                for bg in self.project.backgrounds:
+                    if bg.name == bg_name:
+                        bg_path = bg.image_path
+                        break
+            if not bg_path and self.project.backgrounds:
+                bg_path = self.project.backgrounds[0].image_path
+            if not bg_path:
+                bg_path = str(self.image_engine.backgrounds_path / "default.png")
+
+            self.video_engine.create_scene(
+                image_path=char_path,
+                audio_path=audio_path
+            )
+
+    def render_movie(self, filename="movie.mp4"):
+        return self.video_engine.render_movie(filename)
 
     def reset(self):
-
         self.project.clear()
-
         self.character_ai.clear()
-
         self.background_ai.clear()
+        self.video_engine.clear()  # ← ДОДАВ ОЧИЩЕННЯ
+        self.dialog_list = []
+
+================================================================================
+Файл: lordwolf/ai/scene_ai.py
+================================================================================
+Статус : ПУСТИЙ
+Рядків : 0
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+(порожній файл)
 
 ================================================================================
 Файл: lordwolf/ai/script_ai.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 157
+Рядків : 206
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -696,7 +821,7 @@ LordWolf AI Studio
 Script AI
 """
 
-from typing import Dict
+from typing import Dict, Optional
 
 from lordwolf.data.scene import Scene
 
@@ -759,21 +884,23 @@ class ScriptAI:
 
             current_scene.add_action(text)
 
-            self.detect_characters(text)
+            self.detect_characters(text, current_scene)
 
-            self.detect_backgrounds(text)
+            self.detect_backgrounds(text, current_scene)
 
         if current_scene is not None:
 
             self.scenes.append(current_scene)
 
+        # Визначаємо головних персонажів для кожної сцени
+        for scene in self.scenes:
+            self.detect_main_character(scene)
+
         return self.get_result()
 
-    def detect_characters(self, text: str):
+    def detect_characters(self, text: str, scene: Scene):
 
         names = [
-
-            "вовк",
 
             "лорд вовк",
 
@@ -781,59 +908,106 @@ class ScriptAI:
 
             "брюнетка",
 
-            "король",
-
             "королева",
+
+            "король",
 
             "лицар",
 
             "чаклун",
 
-            "дракон"
+            "дракон",
+
+            "вовк"
 
         ]
 
         lower = text.lower()
 
+        consumed = lower
+
         for name in names:
 
-            if name in lower:
+            if name in consumed:
 
-                self.characters.add(name.title())
+                display_name = name.title()
 
-    def detect_backgrounds(self, text: str):
+                self.characters.add(display_name)
+
+                scene.add_character(display_name)
+
+                # Вирізаємо знайдену назву,
+                # щоб коротші не знайшлися всередині неї
+                consumed = consumed.replace(name, " " * len(name), 1)
+
+    def detect_backgrounds(self, text: str, scene: Scene):
 
         places = [
-
-            "замок",
-
-            "ліс",
-
-            "печера",
-
-            "дорога",
-
-            "поле",
-
-            "будинок",
 
             "кімната",
 
             "кабінет",
 
+            "будинок",
+
+            "печера",
+
+            "дорога",
+
             "палац",
 
-            "вежа"
+            "замок",
+
+            "поле",
+
+            "вежа",
+
+            "ліс"
 
         ]
 
         lower = text.lower()
 
+        consumed = lower
+
         for place in places:
 
-            if place in lower:
+            if place in consumed:
 
-                self.backgrounds.add(place.title())
+                display_name = place.title()
+
+                self.backgrounds.add(display_name)
+
+                scene.add_background(display_name)
+
+                consumed = consumed.replace(place, " " * len(place), 1)
+
+    def detect_main_character(self, scene: Scene):
+        """
+        Визначає головного персонажа сцени.
+
+        Алгоритм:
+        1. Беремо перше речення (перший action)
+        2. Шукаємо в ньому персонажів зі списку scene.characters
+        3. Якщо знайшли - це головний персонаж сцени
+        4. Якщо ні - беремо першого персонажа зі списку
+        """
+
+        if not scene.actions:
+            return
+
+        # Беремо перше речення сцени
+        first_action = scene.actions[0]
+
+        # Шукаємо персонажів у першому реченні
+        for character in scene.characters:
+            if character.lower() in first_action.lower():
+                scene.main_character = character
+                return
+
+        # Якщо нікого не знайшли - беремо першого персонажа
+        if scene.characters:
+            scene.main_character = scene.characters[0]
 
     def get_result(self):
 
@@ -1415,7 +1589,7 @@ class MovieProject:
 Файл: lordwolf/data/scene.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 104
+Рядків : 109
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -1458,6 +1632,8 @@ class Scene:
     duration: float = 0.0
 
     notes: str = ""
+
+    main_character: str = ""  # НОВЕ ПОЛЕ
 
     def add_action(self, action: str):
 
@@ -1515,13 +1691,16 @@ class Scene:
 
         self.notes = ""
 
+        self.main_character = ""  # Очищаємо головного персонажа
+
     def __str__(self):
 
         return (
             f"Scene {self.number}: {self.title} "
             f"(Actions={len(self.actions)}, "
             f"Characters={len(self.characters)}, "
-            f"Backgrounds={len(self.backgrounds)})"
+            f"Backgrounds={len(self.backgrounds)}, "
+            f"Main Character={self.main_character})"
         )
 
 ================================================================================
@@ -1614,7 +1793,7 @@ class AnimationEngine:
 Файл: lordwolf/engines/image_engine.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 69
+Рядків : 167
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -1624,16 +1803,14 @@ Image Engine
 """
 
 from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
+import unicodedata
+import re
 
 
 class ImageEngine:
     """
     Рушій генерації зображень.
-    У майбутньому тут будуть:
-    - Stable Diffusion
-    - ComfyUI
-    - Flux
-    - локальні моделі
     """
 
     def __init__(self, assets_path="assets"):
@@ -1648,45 +1825,145 @@ class ImageEngine:
         self.backgrounds_path.mkdir(parents=True, exist_ok=True)
         self.props_path.mkdir(parents=True, exist_ok=True)
 
-    def generate_character(self, name: str, prompt: str = None):
+        print(f"[INFO] ImageEngine ініціалізовано")
+        print(f"  - Characters: {self.characters_path}")
+        print(f"  - Backgrounds: {self.backgrounds_path}")
+        print(f"  - Props: {self.props_path}")
 
+    def _slugify(self, name: str) -> str:
         """
-        Поки що заглушка.
-        Пізніше тут буде AI генерація PNG.
+        Перетворює кирилицю в латиницю для безпечних імен файлів.
+        """
+        # Транслітерація української → латиниця
+        translit_map = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'h', 'ґ': 'g',
+            'д': 'd', 'е': 'e', 'є': 'ye', 'ж': 'zh', 'з': 'z',
+            'и': 'y', 'і': 'i', 'ї': 'yi', 'й': 'y', 'к': 'k',
+            'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p',
+            'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f',
+            'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
+            'ь': '', 'ю': 'yu', 'я': 'ya',
+            'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'H', 'Ґ': 'G',
+            'Д': 'D', 'Е': 'E', 'Є': 'Ye', 'Ж': 'Zh', 'З': 'Z',
+            'И': 'Y', 'І': 'I', 'Ї': 'Yi', 'Й': 'Y', 'К': 'K',
+            'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P',
+            'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F',
+            'Х': 'Kh', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Shch',
+            'Ь': '', 'Ю': 'Yu', 'Я': 'Ya'
+        }
+
+        result = ''
+        for char in name:
+            if char in translit_map:
+                result += translit_map[char]
+            elif char.isalnum() or char == ' ':
+                result += char
+            else:
+                result += ''
+
+        # Замінюємо пробіли на нижнє підкреслення
+        result = result.replace(' ', '_')
+        # Видаляємо зайві символи
+        result = re.sub(r'[^a-zA-Z0-9_]', '', result)
+
+        return result
+
+    def generate_character(self, name: str, prompt: str = None) -> str:
+        """
+        Генерує зображення персонажа.
         """
 
-        file_path = self.characters_path / f"{name}.png"
+        # Створюємо безпечне ім'я файлу
+        safe_name = self._slugify(name)
+        file_path = self.characters_path / f"{safe_name}.png"
 
-        # TODO: підключити AI генерацію
-        # зараз просто створюємо пустий файл як тест
+        # Зберігаємо оригінальне ім'я для тексту на зображенні
+        display_name = name
 
-        file_path.touch()
+        print(f"[INFO] Генерація персонажа: {name} -> {file_path}")
+
+        # Створюємо кольоровий квадрат з іменем
+        img = Image.new("RGB", (256, 256), color=self._get_color(name))
+        draw = ImageDraw.Draw(img)
+
+        # Додаємо текст
+        try:
+            font = ImageFont.truetype("arial.ttf", 20)
+        except:
+            font = ImageFont.load_default()
+
+        draw.text((10, 120), display_name, fill="white", font=font)
+
+        img.save(file_path)
+        print(f"[INFO] Збережено: {file_path}")
 
         return str(file_path)
 
-    def generate_background(self, name: str, prompt: str = None):
+    def generate_background(self, name: str, prompt: str = None) -> str:
+        """
+        Генерує зображення фону.
+        """
 
-        file_path = self.backgrounds_path / f"{name}.png"
+        safe_name = self._slugify(name)
+        file_path = self.backgrounds_path / f"{safe_name}.png"
+        display_name = name
 
-        file_path.touch()
+        print(f"[INFO] Генерація фону: {name} -> {file_path}")
+
+        img = Image.new("RGB", (512, 384), color=(50, 50, 80))
+        draw = ImageDraw.Draw(img)
+
+        try:
+            font = ImageFont.truetype("arial.ttf", 24)
+        except:
+            font = ImageFont.load_default()
+
+        draw.text((10, 180), display_name, fill="white", font=font)
+
+        img.save(file_path)
+        print(f"[INFO] Збережено: {file_path}")
 
         return str(file_path)
 
-    def generate_prop(self, name: str, prompt: str = None):
+    def generate_prop(self, name: str, prompt: str = None) -> str:
+        """
+        Генерує зображення пропа.
+        """
 
-        file_path = self.props_path / f"{name}.png"
+        safe_name = self._slugify(name)
+        file_path = self.props_path / f"{safe_name}.png"
 
-        file_path.touch()
+        img = Image.new("RGB", (128, 128), color=(100, 100, 100))
+        img.save(file_path)
 
         return str(file_path)
 
-    def get_character_path(self, name: str):
+    def _get_color(self, name: str) -> tuple:
+        """
+        Повертає колір на основі імені.
+        """
 
-        return str(self.characters_path / f"{name}.png")
+        colors = {
+            "Лорд Вовк": (80, 40, 120),
+            "Вовк": (80, 40, 120),
+            "Блондинка": (255, 200, 100),
+            "Брюнетка": (150, 80, 40),
+            "Король": (200, 50, 50),
+            "Королева": (200, 50, 150),
+            "Лицар": (150, 150, 200),
+            "Чаклун": (50, 50, 150),
+            "Дракон": (200, 50, 0),
+        }
 
-    def get_background_path(self, name: str):
+        return colors.get(name, (100, 100, 100))
 
-        return str(self.backgrounds_path / f"{name}.png")
+    def get_character_path(self, name: str) -> str:
+        safe_name = self._slugify(name)
+        return str(self.characters_path / f"{safe_name}.png")
+
+    def get_background_path(self, name: str) -> str:
+        safe_name = self._slugify(name)
+        return str(self.backgrounds_path / f"{safe_name}.png")
 
 ================================================================================
 Файл: lordwolf/engines/music_engine.py
@@ -1861,108 +2138,162 @@ class ScriptEngine:
 Файл: lordwolf/engines/video_engine.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 92
+Рядків : 146
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
-"""
-LordWolf AI Studio
-Video Engine
-"""
-
-from dataclasses import dataclass
-from typing import List
-
-
-@dataclass
-class VideoFrame:
-
-    image_path: str
-
-    duration: float = 1.0
-
-    audio_path: str = ""
-
-    animation: str = ""
+from pathlib import Path
+import cv2
+import subprocess
+import tempfile
+from mutagen.mp3 import MP3
 
 
 class VideoEngine:
-    """
-    Рушій фінального відео-рендеру.
-    """
+    def __init__(self, output_dir="output"):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.scenes = []
 
-    def __init__(self):
+    def create_scene(self, image_path, audio_path=None, duration=5.0):
+        self.scenes.append({
+            "image": image_path,
+            "audio": audio_path,
+            "duration": duration
+        })
 
-        self.frames: List[VideoFrame] = []
+    def render_movie(self, filename="lordwolf_movie.mp4", fps=24):
+        if not self.scenes:
+            print("[ERROR] Немає сцен")
+            return None
 
-    def add_frame(self, image_path, duration=1.0, audio_path="", animation=""):
+        print(f"[INFO] Рендеринг: {len(self.scenes)} сцен")
 
-        frame = VideoFrame(
+        first_img = self.scenes[0]["image"]
+        if not Path(first_img).exists():
+            print(f"[ERROR] Немає зображення: {first_img}")
+            return None
 
-            image_path=image_path,
+        img = cv2.imread(str(first_img))
+        if img is None:
+            print(f"[ERROR] Не вдалося завантажити: {first_img}")
+            return None
 
-            duration=duration,
+        h, w = img.shape[:2]
+        print(f"[INFO] Розмір: {w}x{h}")
 
-            audio_path=audio_path,
+        output_path = self.output_dir / filename
 
-            animation=animation
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            audio_files = []
+            total_frames = 0
 
-        )
+            for i, scene in enumerate(self.scenes):
+                print(f"[INFO] Сцена {i+1}/{len(self.scenes)}")
 
-        self.frames.append(frame)
+                img_path = scene["image"]
+                if not Path(img_path).exists():
+                    continue
 
-        return frame
+                img = cv2.imread(str(img_path))
+                if img is None:
+                    continue
+
+                if img.shape[1] != w or img.shape[0] != h:
+                    img = cv2.resize(img, (w, h))
+
+                duration = scene.get("duration", 5.0)
+                audio_path = scene.get("audio")
+
+                if audio_path and Path(audio_path).exists():
+                    try:
+                        audio = MP3(audio_path)
+                        duration = max(duration, audio.info.length)
+                        audio_files.append(audio_path)
+                        print(f"[INFO]   Аудіо: {Path(audio_path).name} ({audio.info.length:.2f}с)")
+                    except:
+                        pass
+
+                num_frames = int(duration * fps)
+                print(f"[INFO]   Кадрів: {num_frames}")
+
+                for _ in range(num_frames):
+                    frame_path = tmp_path / f"frame_{total_frames:06d}.png"
+                    cv2.imwrite(str(frame_path), img)
+                    total_frames += 1
+
+            if total_frames == 0:
+                print("[ERROR] Немає кадрів")
+                return None
+
+            print(f"[INFO] Всього кадрів: {total_frames}")
+
+            video_only = tmp_path / "video_only.mp4"
+            cmd = [
+                "ffmpeg", "-y",
+                "-framerate", str(fps),
+                "-i", str(tmp_path / "frame_%06d.png"),
+                "-c:v", "libx264",
+                "-pix_fmt", "yuv420p",
+                str(video_only)
+            ]
+            subprocess.run(cmd, capture_output=True, check=True)
+
+            if audio_files:
+                print(f"[INFO] Додавання звуку ({len(audio_files)} файлів)")
+
+                list_file = tmp_path / "audio_list.txt"
+                with open(list_file, "w") as f:
+                    for af in audio_files:
+                        f.write(f"file '{Path(af).absolute()}'\n")
+
+                combined = tmp_path / "combined.mp3"
+                cmd = [
+                    "ffmpeg", "-y",
+                    "-f", "concat",
+                    "-safe", "0",
+                    "-i", str(list_file),
+                    "-c", "copy",
+                    str(combined)
+                ]
+                subprocess.run(cmd, capture_output=True, check=True)
+
+                if combined.exists():
+                    cmd = [
+                        "ffmpeg", "-y",
+                        "-i", str(video_only),
+                        "-i", str(combined),
+                        "-c:v", "copy",
+                        "-c:a", "aac",
+                        "-shortest",
+                        str(output_path)
+                    ]
+                    subprocess.run(cmd, capture_output=True, check=True)
+                    print("[INFO] Звук додано")
+                else:
+                    import shutil
+                    shutil.copy(video_only, output_path)
+            else:
+                import shutil
+                shutil.copy(video_only, output_path)
+
+        if output_path.exists():
+            size = output_path.stat().st_size / 1024 / 1024
+            print(f"[SUCCESS] Відео: {output_path} ({size:.2f} MB)")
+            return str(output_path)
+
+        print("[ERROR] Відео не створено")
+        return None
 
     def clear(self):
-
-        self.frames.clear()
-
-    def total_duration(self):
-
-        return sum(frame.duration for frame in self.frames)
-
-    def get_frames(self):
-
-        return self.frames
-
-    def build_video_plan(self):
-
-        """
-        Поки що не рендерить MP4.
-        Але створює повний план відео.
-        """
-
-        return {
-
-            "total_frames": len(self.frames),
-
-            "total_duration": self.total_duration(),
-
-            "frames": [
-
-                {
-
-                    "image": f.image_path,
-
-                    "audio": f.audio_path,
-
-                    "animation": f.animation,
-
-                    "duration": f.duration
-
-                }
-
-                for f in self.frames
-
-            ]
-
-        }
+        self.scenes.clear()
 
 ================================================================================
 Файл: lordwolf/engines/voice_engine.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 60
+Рядків : 58
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -1971,61 +2302,59 @@ LordWolf AI Studio
 Voice Engine
 """
 
-from dataclasses import dataclass
-
-
-@dataclass
-class VoiceTrack:
-
-    text: str
-
-    voice: str
-
-    speed: float = 1.0
-
-    pitch: float = 1.0
-
-    file_path: str = ""
+from pathlib import Path
+from gtts import gTTS
+import time
 
 
 class VoiceEngine:
     """
     Рушій озвучення персонажів.
+    Використовує gTTS для генерації голосу.
     """
 
-    def __init__(self):
+    def __init__(self, output_dir="audio_output"):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.audio_files = []
 
-        self.tracks = []
+    def generate_voice(self, text: str, voice_name: str = "Narrator") -> str:
+        """
+        Генерує аудіофайл з тексту.
+        """
+        clean_text = text.strip()
+        if not clean_text:
+            return ""
 
-    def add_voice(self, text, voice="Narrator", speed=1.0, pitch=1.0):
+        timestamp = int(time.time() * 1000)
+        filename = f"voice_{timestamp}.mp3"
+        filepath = self.output_dir / filename
 
-        track = VoiceTrack(
+        try:
+            tts = gTTS(text=clean_text, lang="uk", slow=False)
+            tts.save(str(filepath))
+            self.audio_files.append(str(filepath))
+            return str(filepath)
+        except Exception as e:
+            print(f"[ERROR] Не вдалося згенерувати голос: {e}")
+            return ""
 
-            text=text,
+    def generate_character_voice(self, text: str, character_name: str) -> str:
+        """
+        Генерує голос для конкретного персонажа.
+        """
+        return self.generate_voice(text, character_name)
 
-            voice=voice,
-
-            speed=speed,
-
-            pitch=pitch
-
-        )
-
-        self.tracks.append(track)
-
-        return track
-
-    def clear(self):
-
-        self.tracks.clear()
-
-    def get_tracks(self):
-
-        return self.tracks
-
-    def total_lines(self):
-
-        return len(self.tracks)
+    def clear_cache(self):
+        """
+        Видаляє всі згенеровані аудіофайли.
+        """
+        for filepath in self.audio_files:
+            try:
+                Path(filepath).unlink()
+            except:
+                pass
+        self.audio_files.clear()
 
 ================================================================================
 Файл: lordwolf/image/__init__.py
@@ -2465,7 +2794,7 @@ class SceneManager:
 Файл: lordwolf/ui/background_panel.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 65
+Рядків : 69
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -2535,11 +2864,15 @@ class BackgroundPanel(QWidget):
 
             self.list_widget.addItem(name)
 
+    def clear(self):
+        self.backgrounds = []
+        self.list_widget.clear()
+
 ================================================================================
 Файл: lordwolf/ui/character_panel.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 61
+Рядків : 64
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -2584,7 +2917,6 @@ class CharacterPanel(QWidget):
         self.layout.addWidget(self.title)
         self.layout.addWidget(self.list_widget)
 
-    # 🔥 НОВИЙ МЕТОД ДЛЯ MAIN WINDOW
     def update_characters(self, characters):
 
         self.characters = characters
@@ -2605,20 +2937,26 @@ class CharacterPanel(QWidget):
 
             self.list_widget.addItem(name)
 
+    def clear(self):
+        self.characters = []
+        self.list_widget.clear()
+
 ================================================================================
 Файл: lordwolf/ui/main_window.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 214
+Рядків : 360
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
 from PySide6.QtWidgets import (
     QMainWindow,
     QDockWidget,
-    QMessageBox
+    QMessageBox,
+    QFileDialog
 )
 from PySide6.QtCore import Qt
+from pathlib import Path
 
 from lordwolf.core.config import *
 from lordwolf.core.logger import Logger
@@ -2646,7 +2984,7 @@ class MainWindow(QMainWindow):
 
         self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-        # 🔥 ENGINE
+        # ENGINE
         self.script_engine = ScriptEngine()
 
         self.create_widgets()
@@ -2718,6 +3056,9 @@ class MainWindow(QMainWindow):
         self.script_editor.analyzeRequested.connect(self.analyze_script)
         self.script_editor.generateRequested.connect(self.generate_movie_from_script)
 
+        # Підключаємо рендер з панелі
+        self.render_panel.startRender.connect(self.render_movie)
+
     # -----------------------------
     # UI ACTIONS
     # -----------------------------
@@ -2726,48 +3067,96 @@ class MainWindow(QMainWindow):
 
         Logger.info("New Project")
 
+        # Очищаємо редактор
+        self.script_editor.clear()
+        self.script_editor.set_status("Новий проект створено")
+
+        # Очищаємо панелі
+        self.character_panel.clear()
+        self.background_panel.clear()
+        self.timeline_panel.clear()
+
+        # Скидаємо двигун
+        self.script_engine.reset()
+
         QMessageBox.information(
             self,
             APP_NAME,
-            "Новий проєкт створено (поки що заглушка)"
+            "✅ Новий проєкт створено!\n\n"
+            "Можете починати писати сценарій."
         )
 
     def open_project(self):
 
         Logger.info("Open Project")
 
-        QMessageBox.information(
+        # Відкриваємо діалог вибору файлу
+        file_path, _ = QFileDialog.getOpenFileName(
             self,
-            APP_NAME,
-            "Відкрити проєкт (поки що заглушка)"
+            "Відкрити проект",
+            "projects",
+            "LordWolf Project (*.wolf);;All Files (*.*)"
         )
+
+        if file_path:
+            QMessageBox.information(
+                self,
+                APP_NAME,
+                f"📂 Відкрито проект: {Path(file_path).name}\n\n"
+                "Функція завантаження проектів ще в розробці."
+            )
 
     def save_project(self):
 
         Logger.info("Save Project")
 
-        QMessageBox.information(
+        # Відкриваємо діалог збереження
+        file_path, _ = QFileDialog.getSaveFileName(
             self,
-            APP_NAME,
-            "Зберегти проєкт (поки що заглушка)"
+            "Зберегти проект",
+            "projects/untitled.wolf",
+            "LordWolf Project (*.wolf);;All Files (*.*)"
         )
+
+        if file_path:
+            QMessageBox.information(
+                self,
+                APP_NAME,
+                f"💾 Проект збережено: {Path(file_path).name}\n\n"
+                "Функція збереження проектів ще в розробці."
+            )
 
     def generate_movie(self):
 
         Logger.info("Generate Movie")
 
-        QMessageBox.information(
-            self,
-            APP_NAME,
-            "Генерація мультфільму (буде реалізовано далі)"
-        )
+        # Беремо текст з редактора
+        script = self.script_editor.get_script()
+
+        if not script.strip():
+            QMessageBox.warning(
+                self,
+                APP_NAME,
+                "⚠️ Сценарій порожній!\n\n"
+                "Напишіть сценарій у редакторі."
+            )
+            return
+
+        # Аналізуємо сценарій
+        self.analyze_script(script)
+
+        # Потім рендеримо відео
+        self.render_movie()
 
     def show_settings(self):
 
         QMessageBox.information(
             self,
             APP_NAME,
-            "Налаштування (поки що заглушка)"
+            "⚙️ Налаштування\n\n"
+            "Версія: " + VERSION + "\n"
+            "Автор: " + AUTHOR + "\n\n"
+            "Функція налаштувань ще в розробці."
         )
 
     # -----------------------------
@@ -2778,26 +3167,113 @@ class MainWindow(QMainWindow):
 
         Logger.info("Analyze Script")
 
+        if not script.strip():
+            QMessageBox.warning(
+                self,
+                APP_NAME,
+                "⚠️ Сценарій порожній!\n\n"
+                "Напишіть сценарій у редакторі."
+            )
+            return
+
         project = self.script_engine.process(script)
 
-        # 🔥 оновлення UI
+        # оновлення UI
         self.update_ui_from_project(project)
 
+        # Показуємо результат
         self.script_editor.set_status(
-            "Сценарій проаналізовано і перетворено в проект"
+            f"✅ Сценарій проаналізовано: {project.scene_count()} сцен, "
+            f"{project.character_count()} персонажів, "
+            f"{project.background_count()} фонів"
+        )
+
+        QMessageBox.information(
+            self,
+            APP_NAME,
+            f"🎬 Проєкт створено!\n\n"
+            f"📝 Сцен: {project.scene_count()}\n"
+            f"🎭 Персонажів: {project.character_count()}\n"
+            f"🌲 Фонів: {project.background_count()}\n"
+            f"🎵 Озвучено: {len([v for s in project.scenes for v in s.voices])} реплік"
         )
 
     def generate_movie_from_script(self, script):
 
         Logger.info("Generate Movie From Script")
 
-        project = self.script_engine.process(script)
+        self.analyze_script(script)
+        self.render_movie()
 
-        self.update_ui_from_project(project)
+    def render_movie(self):
+        """
+        Рендерить фінальне відео.
+        """
+        Logger.info("Початок рендерингу відео")
 
-        self.script_editor.set_status(
-            "Проект готовий до генерації відео"
-        )
+        # Перевіряємо, чи є проект
+        if self.script_engine.last_project is None:
+            QMessageBox.warning(
+                self,
+                APP_NAME,
+                "⚠️ Спочатку проаналізуйте сценарій!\n\n"
+                "Натисніть 'Аналізувати сценарій' або 'Створити мультфільм'."
+            )
+            return
+
+        try:
+            # Показуємо повідомлення про початок
+            self.render_panel.add_log("🎬 Початок рендерингу...")
+            self.render_panel.set_progress(10)
+
+            # Рендеримо відео
+            video_path = self.script_engine.director.render_movie("lordwolf_movie.mp4")
+
+            self.render_panel.set_progress(90)
+
+            if video_path:
+                # Перевіряємо, чи файл існує
+                if Path(video_path).exists():
+                    file_size = Path(video_path).stat().st_size / 1024 / 1024
+                    self.render_panel.add_log(f"✅ Відео створено: {video_path}")
+                    self.render_panel.add_log(f"📊 Розмір: {file_size:.2f} MB")
+                    self.render_panel.set_progress(100)
+
+                    QMessageBox.information(
+                        self,
+                        APP_NAME,
+                        f"🎉 Відео створено успішно!\n\n"
+                        f"📁 Файл: {video_path}\n"
+                        f"📊 Розмір: {file_size:.2f} MB"
+                    )
+                else:
+                    self.render_panel.add_log("❌ Відео не створено")
+                    QMessageBox.warning(
+                        self,
+                        APP_NAME,
+                        "❌ Відео не створено.\n\n"
+                        "Перевірте логи в терміналі."
+                    )
+            else:
+                self.render_panel.add_log("❌ Помилка рендерингу")
+                QMessageBox.warning(
+                    self,
+                    APP_NAME,
+                    "❌ Не вдалося створити відео.\n\n"
+                    "Перевірте:\n"
+                    "1. Чи є зображення в assets/characters/\n"
+                    "2. Чи є аудіо в audio_output/\n"
+                    "3. Чи встановлено ffmpeg"
+                )
+
+        except Exception as e:
+            Logger.error(f"Помилка рендерингу: {e}")
+            self.render_panel.add_log(f"❌ Помилка: {str(e)}")
+            QMessageBox.critical(
+                self,
+                APP_NAME,
+                f"❌ Помилка рендерингу:\n\n{str(e)}"
+            )
 
     # -----------------------------
     # UI UPDATE ENGINE
@@ -2813,6 +3289,12 @@ class MainWindow(QMainWindow):
         self.character_panel.update_characters(characters)
         self.background_panel.update_backgrounds(backgrounds)
         self.timeline_panel.update_scenes(scenes)
+
+        # Оновлюємо панель рендерингу
+        self.render_panel.add_log(f"📝 Сцен: {len(scenes)}")
+        self.render_panel.add_log(f"🎭 Персонажів: {len(characters)}")
+        self.render_panel.add_log(f"🌲 Фонів: {len(backgrounds)}")
+        self.render_panel.set_progress(0)
 
     def _safe_get(self, obj, key, default):
 
@@ -3151,7 +3633,7 @@ class ScriptEditor(QWidget):
 Файл: lordwolf/ui/timeline.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 66
+Рядків : 70
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
@@ -3221,6 +3703,10 @@ class TimelinePanel(QWidget):
             else:
 
                 self.list_widget.addItem(str(scene))
+
+    def clear(self):
+        self.scenes = []
+        self.list_widget.clear()
 
 ================================================================================
 Файл: lordwolf/ui/toolbar.py
@@ -3732,13 +4218,764 @@ print("========================================")
 Файл: comands.txt
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 3
+Рядків : 754
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
 python project_snapshot.py 
 python -m compileall .
 python app.py
+
+
+Сцена 1
+Лорд Вовк приходить до замку і бачить темний ліс.
+
+Сцена 2
+Блондинка зустрічає Лорда Вовка біля воріт.
+
+Сцена 3
+Вони разом заходять у замок і починається пригода.
+
+
+
+Структура папок
+Серийный номер тома: EEA7-98D8
+C:.
+│   app.py
+│   comands.txt
+│   LICENSE
+│   project_snapshot.py
+│   project_snapshot.txt
+│   README.md
+│   requirements.txt
+│   ui_dump.txt
+│   
+├───.git
+│   │   COMMIT_EDITMSG
+│   │   config
+│   │   description
+│   │   FETCH_HEAD
+│   │   HEAD
+│   │   index
+│   │   ORIG_HEAD
+│   │   packed-refs
+│   │   
+│   ├───hooks
+│   │       applypatch-msg.sample
+│   │       commit-msg.sample
+│   │       fsmonitor-watchman.sample
+│   │       post-update.sample
+│   │       pre-applypatch.sample
+│   │       pre-commit.sample
+│   │       pre-merge-commit.sample
+│   │       pre-push.sample
+│   │       pre-rebase.sample
+│   │       pre-receive.sample
+│   │       prepare-commit-msg.sample
+│   │       push-to-checkout.sample
+│   │       sendemail-validate.sample
+│   │       update.sample
+│   │       
+│   ├───info
+│   │       exclude
+│   │       
+│   ├───logs
+│   │   │   HEAD
+│   │   │   
+│   │   └───refs
+│   │       ├───heads
+│   │       │       main
+│   │       │       
+│   │       └───remotes
+│   │           └───origin
+│   │                   HEAD
+│   │                   main
+│   │                   
+│   ├───objects
+│   │   ├───02
+│   │   │       3d7209819224735dcdcec62ffc2546ba6574d0
+│   │   │       
+│   │   ├───03
+│   │   │       7033456f4f6afb6cecbbfa5fbf2afdaca7c006
+│   │   │       
+│   │   ├───04
+│   │   │       e672362ec521fb9d18936508b035838ef9b043
+│   │   │       
+│   │   ├───05
+│   │   │       252901663acb13c0443a54379dc0ce7b6044b4
+│   │   │       4c88d5a0ba936181fe18d77b322d2189d73b54
+│   │   │       6d6939a26ba90838bd4fab54675b2566d9ef03
+│   │   │       ccf3841e019020309da13afea3c9122e791628
+│   │   │       d393567341f2a2e7a113fa3735073d1d99a04f
+│   │   │       
+│   │   ├───06
+│   │   │       0c62b51dc0001235f8e3bb3876caef2724b741
+│   │   │       2d6a34075d7f7e31f33bcc9cce50fa0fca3b58
+│   │   │       
+│   │   ├───07
+│   │   │       23d32ff1a0bf687a3bdd48b5552553c2ef7ac6
+│   │   │       
+│   │   ├───08
+│   │   │       874685c8c478b4b94785eabaff6fca9dab7b8e
+│   │   │       
+│   │   ├───09
+│   │   │       bf4931c6c69b969278138551082c089985b945
+│   │   │       
+│   │   ├───0a
+│   │   │       6bffa8ffa1bf1d66b006f69bdbd4a53a97cfb9
+│   │   │       
+│   │   ├───0c
+│   │   │       d1312a143a47411b62a0c039ff4578a26d3a98
+│   │   │       
+│   │   ├───10
+│   │   │       8fecc3a8a1c80ade72a896ace7c54e8cdb23df
+│   │   │       
+│   │   ├───12
+│   │   │       19933d04cb6b9e7b0321ab0db6db4eb638c8ea
+│   │   │       
+│   │   ├───14
+│   │   │       c70ea8951cb8b12e255e84c40249cf325addb1
+│   │   │       
+│   │   ├───15
+│   │   │       252eadf19ea3430c959e1393f9e275e7ba2238
+│   │   │       
+│   │   ├───1a
+│   │   │       2602a74e27678aa678bf7da3fae7096f66f4c4
+│   │   │       729238315456e59603b84a9e500d9472d0a574
+│   │   │       
+│   │   ├───1d
+│   │   │       302389c6cd7686ddb34b9bd0861d842eac053c
+│   │   │       4661ef9a3a954e44140e9f5e71a249da541059
+│   │   │       733d3dd7f915e0592784acd850f68878e49a89
+│   │   │       98e6477814e2363e8bb19de2a53f8d3ad74f72
+│   │   │       
+│   │   ├───1e
+│   │   │       01da7cd9c807b90dede36c62e0d959efe1a017
+│   │   │       
+│   │   ├───1f
+│   │   │       c0e1109926d03d6d447f37ba93212b2b6eeeea
+│   │   │       
+│   │   ├───25
+│   │   │       11ec7e807b12fe2144e279f23c0ac4490122b5
+│   │   │       946a1ee8def112fe4e77d0cf541fac9b424d69
+│   │   │       
+│   │   ├───28
+│   │   │       fea3408f90d5553d3fcddc889c169b27762262
+│   │   │       
+│   │   ├───2a
+│   │   │       276592864df06c2a6a4be8694ae853792fa3e4
+│   │   │       
+│   │   ├───2d
+│   │   │       7662ee23066a7931db026e2fe9182d6f42217d
+│   │   │       ef72680c407b0eb4ecccb32a8ea0606da96bd9
+│   │   │       
+│   │   ├───30
+│   │   │       528ff416a95ddfe628708056f2e5f881fd5750
+│   │   │       c64dbba29d95c3f8df4863be6df999dabbd02a
+│   │   │       
+│   │   ├───31
+│   │   │       c9a420836c963b8ac24b4a588ff834e641a75b
+│   │   │       
+│   │   ├───33
+│   │   │       16533fcf6747162de1504be03c35415feac47c
+│   │   │       62c71e9fc9c99fa990c7bd7456f36f997d5406
+│   │   │       680721e0c47982cdc7f616cbd79bd844b46b7c
+│   │   │       
+│   │   ├───34
+│   │   │       34f4a1f65cb50d1c45642e44c8a57631b1716e
+│   │   │       80a0ea49119373167af3637bb0f6d047b9a821
+│   │   │       
+│   │   ├───37
+│   │   │       0357b845d86905dca9102f4868ac72b84b8a88
+│   │   │       839ad3bb64ac7629eecbb196a578c8b9121e2b
+│   │   │       
+│   │   ├───39
+│   │   │       4c0db05b1a0a6deefa1a31250e8ddea39fbbdf
+│   │   │       
+│   │   ├───3c
+│   │   │       a401ed50979497ba6c3f59e0c40ee83aca5714
+│   │   │       
+│   │   ├───3e
+│   │   │       2d7c1ec1be825edd92862e08511de8273a1932
+│   │   │       
+│   │   ├───3f
+│   │   │       4542e17a585a90b8dd0890610066727faf8bb1
+│   │   │       841a8b84db1911d47bc253c797f5904519c93f
+│   │   │       cfc71e5d75d7bfaccd64f984abd0150134ef07
+│   │   │       e9390daf0fb75624e6a10355096ef319d151be
+│   │   │       
+│   │   ├───41
+│   │   │       c604fddd6192b85f538aa49f447e54ebb91fc8
+│   │   │       
+│   │   ├───46
+│   │   │       12492bbbff28f1af573e9c005c4c09e96bf8f2
+│   │   │       
+│   │   ├───47
+│   │   │       6f058e6ea1253e148aaa5e01ba5b22bcb75ee9
+│   │   │       
+│   │   ├───4b
+│   │   │       0a196b61e682807d78a0030cd5783643fdb302
+│   │   │       523c134748ead32d1778a7de8b1a4415dbb5c3
+│   │   │       
+│   │   ├───4d
+│   │   │       6b16631a2683b385de9845da1a14426f7dde91
+│   │   │       
+│   │   ├───50
+│   │   │       d640a923006605d51af281f63f9fc26ff8f62c
+│   │   │       
+│   │   ├───53
+│   │   │       708130314caff37fb57cea8a7041f700ebc7d4
+│   │   │       af14f03beda225167d2bd46a7af1e0dc8774f1
+│   │   │       
+│   │   ├───55
+│   │   │       b177654543da6722123c1dd61b0d1a71dda1c9
+│   │   │       
+│   │   ├───56
+│   │   │       b7a87ece4056750a76f29c910ef29ec80047bf
+│   │   │       
+│   │   ├───57
+│   │   │       5f8db7ed5702642e41345b0c64649eb2befa0a
+│   │   │       a89af19cdaf9c18b79e4a8572b2431f308fe89
+│   │   │       
+│   │   ├───58
+│   │   │       de3f53a323351a1a7d8969ce4bed5f063b6794
+│   │   │       
+│   │   ├───59
+│   │   │       88b954b3947543acc9dce084e73493a7e8cc95
+│   │   │       
+│   │   ├───5a
+│   │   │       f939b7fdb6d1b9c38c38f20884bfda40e60f75
+│   │   │       
+│   │   ├───5b
+│   │   │       0ccb955a5bf6a45bc4654889516207cc66e924
+│   │   │       2fbdb252859997628cd68411646563aca6830d
+│   │   │       
+│   │   ├───5e
+│   │   │       98d80c057f0f60f1fa4ace2eaf0e02f661e29d
+│   │   │       f7d82839f7938dbda66265bb2d8071252f1231
+│   │   │       
+│   │   ├───5f
+│   │   │       a41210b143f0bf580cf1e611966be2ad3a039e
+│   │   │       
+│   │   ├───60
+│   │   │       6f6cf81adcc3ef541bfcdb1ecad3fca0ee6b2f
+│   │   │       cc8050bf76b79e3c5636381c16d44a500793c3
+│   │   │       
+│   │   ├───62
+│   │   │       1949fdaa6bb69f7e778ec8b98cb61d587dc32c
+│   │   │       e6b4075f308bf6a06ea5d3c80a1a332b0b0f16
+│   │   │       
+│   │   ├───65
+│   │   │       28f011d55e625e74f11a662428fe2b9006a887
+│   │   │       3fbf7ef47e55cb6e4dcc6c10b38207d3ee1104
+│   │   │       
+│   │   ├───69
+│   │   │       63d527b25bd91610f81a16a788b762c07e3d17
+│   │   │       
+│   │   ├───6d
+│   │   │       c37071e4c2d46fb8dcbeccd75502326baef55d
+│   │   │       
+│   │   ├───71
+│   │   │       100d8b6b130a5849dc9f3a8a0e3b03a4f322ea
+│   │   │       
+│   │   ├───75
+│   │   │       bb897fdf90a109341bab4eeecf85c5417fa1f2
+│   │   │       ea8635692b48ba1ad2205d284c33e75c0b11a6
+│   │   │       
+│   │   ├───76
+│   │   │       e2d21a4edb8cfa34e360205ec765418107759a
+│   │   │       
+│   │   ├───78
+│   │   │       20d0beb6fdb314dbbe3b0d6180618801d84877
+│   │   │       
+│   │   ├───79
+│   │   │       4fe96a34363718782a769852b7b36355d723ed
+│   │   │       
+│   │   ├───7a
+│   │   │       ac85ae819d413f924a7a90c66c688d074d21e4
+│   │   │       
+│   │   ├───7e
+│   │   │       00021d9e8b828efb35b8f6422be34b51d4a017
+│   │   │       
+│   │   ├───7f
+│   │   │       2fcebf624a668b4301f9e2201e302359701b59
+│   │   │       420b4e48f6bd9ce3d6db1dd350ac6f9ed6f4b6
+│   │   │       6456ccd0878717647d407c81c881598569e265
+│   │   │       
+│   │   ├───82
+│   │   │       661d37eb504bb78369c3d912cfcf2b5a0bb002
+│   │   │       ffc6b098986c22b698270c9bf083348445fd19
+│   │   │       
+│   │   ├───83
+│   │   │       279fe13cb4b03831e8667f7ba05c1a969d9fa9
+│   │   │       
+│   │   ├───85
+│   │   │       726b1184d3fb97478ac08c3c303e8a204d7642
+│   │   │       adcc50d92f63068e357769f8bdfb964da9414d
+│   │   │       
+│   │   ├───87
+│   │   │       bc60a7f17381a6746e0ebb0099c52426092df3
+│   │   │       cf8f61b2dfb1bf15faf764e87e5f067ca4452f
+│   │   │       
+│   │   ├───88
+│   │   │       3465ff8eb59cd2c186e502627137cec2fc2e76
+│   │   │       
+│   │   ├───89
+│   │   │       599490d6c74baab1ef6c7dbfff0a6e0a2d47fc
+│   │   │       9c5bdd042f1319833cd866ba78eb25ccf8c51b
+│   │   │       
+│   │   ├───8f
+│   │   │       7411e1490cc856204f390eae2c432421545297
+│   │   │       8bc236493cfa23c22db803f0de22c36945c3a1
+│   │   │       
+│   │   ├───92
+│   │   │       43d0ff582320041d30b550490184dfcd8d96d8
+│   │   │       
+│   │   ├───93
+│   │   │       3201d59043454aacb0942628028640b64ea3f5
+│   │   │       
+│   │   ├───95
+│   │   │       6217c1d74f9ee544c65ce31a6745f962414dbe
+│   │   │       
+│   │   ├───96
+│   │   │       08cd426dfa6300ea6d2f3f4cc0cc9c849ee73d
+│   │   │       
+│   │   ├───97
+│   │   │       c023bcb0c33a42cbc2cbbcfbc81fc2fadb594f
+│   │   │       f0aa6f62afacba2be5b9e6f8a04acbb78e752a
+│   │   │       
+│   │   ├───99
+│   │   │       691729e67c7259bce6c84dd01a1f0eedb909a0
+│   │   │       
+│   │   ├───9b
+│   │   │       0eee6859b1821eea59b87736e67bd016b2b302
+│   │   │       3ba31ce2abe4071f0dafe345fa87a968fef489
+│   │   │       bb9194aeab8d77c8582ad66cab55d29bcdb66c
+│   │   │       fdecc4e00e5c3fad9f13a9b8ba7feb80efc82b
+│   │   │       
+│   │   ├───9c
+│   │   │       c30338e45f38e1fd7ac732f95a13ec75d61d0c
+│   │   │       
+│   │   ├───9d
+│   │   │       341811d11b683b900a06b905e70795159f7893
+│   │   │       
+│   │   ├───9f
+│   │   │       a8023ea9ae3071bd12c2d1d69b728ebd17adb7
+│   │   │       
+│   │   ├───a1
+│   │   │       4f9b490bf42dd01bb41c0c81756d1c109bd5d9
+│   │   │       8c0d2e70fd3c5a9330165e1b56bc9364fc02e8
+│   │   │       
+│   │   ├───a7
+│   │   │       736391165b93f530de45f7c9f10d792e93cbcd
+│   │   │       
+│   │   ├───a9
+│   │   │       0365556ed649502052476c7ed69ef300064bef
+│   │   │       
+│   │   ├───ab
+│   │   │       10203e731ea9b4c0d2763e705c0a6f1abe46b2
+│   │   │       ab233eed12fb212bedf89c7c8f29bc71177fd5
+│   │   │       
+│   │   ├───ae
+│   │   │       089ecf2bec7ef4e986140581c9008ce42a58b7
+│   │   │       30bc73b7ef3099fc29f9534f7f189ff6835704
+│   │   │       
+│   │   ├───b0
+│   │   │       8c6ec08655b04396f1d15fa5be9ccea8f42a02
+│   │   │       94a8201c81820ebab0d64ce206963640a007db
+│   │   │       
+│   │   ├───b2
+│   │   │       b6297d761cfbbf6f8f321f74856e60de144cf1
+│   │   │       
+│   │   ├───b3
+│   │   │       197ac832ec5fda7eac77d25aed12d05a775ad8
+│   │   │       9923a3384a0f14a0302143cd530bb87d0c4441
+│   │   │       
+│   │   ├───b4
+│   │   │       eb7b673cdaf84d80a1e91f0700853aae807e5e
+│   │   │       
+│   │   ├───b5
+│   │   │       096eade0851a0ca270a298c4e00529126126f9
+│   │   │       
+│   │   ├───b8
+│   │   │       3145e0a79732c61b640e8e771f3f6c2d077b8f
+│   │   │       
+│   │   ├───b9
+│   │   │       61e8f554f40111709a12b2eda39bb48351b5d8
+│   │   │       
+│   │   ├───ba
+│   │   │       bb6fe6a956c4fcc3f0fb39248c6b11c78b6d2a
+│   │   │       
+│   │   ├───bb
+│   │   │       c8c6ad7674349dfaf8975289793bd1817758c6
+│   │   │       fa62b4d7ce4f2f3f095680c9ba77996c3f2d38
+│   │   │       
+│   │   ├───bc
+│   │   │       829c773145a6154670c971ac8de92915de58ea
+│   │   │       d3cf292a8c50fa86135a2e3eb9de1eae062420
+│   │   │       
+│   │   ├───bd
+│   │   │       256ac2f43dd9882526c8e45dc9332ba181ee38
+│   │   │       
+│   │   ├───bf
+│   │   │       eb8191719cb0989bd5b310b08a4117fa78578a
+│   │   │       
+│   │   ├───c0
+│   │   │       f1870087a5e87bfce3cce8a80b5e959c1f8ac2
+│   │   │       
+│   │   ├───c1
+│   │   │       bf6a53cde05f337d37b4317f5052e05c22cc1e
+│   │   │       
+│   │   ├───c3
+│   │   │       36ec0ed7bebda0a1503bdcc9482a67112c3bdb
+│   │   │       80b6484b3fe35d0ecf1216b86a0ef5b9a8bc45
+│   │   │       
+│   │   ├───c6
+│   │   │       e73f88daa0c2c46dfe9f672b47930e9cd25b1e
+│   │   │       
+│   │   ├───cb
+│   │   │       3cc5b5002a931cc2e61cf8648605d1c44ce800
+│   │   │       cee8fdbbb6dc5dc23415c03d85c4fbe23f37e7
+│   │   │       
+│   │   ├───cc
+│   │   │       6b3d419429e80808afb9138bc82efd813984c4
+│   │   │       
+│   │   ├───d0
+│   │   │       a19df13f1fa082d81c76f344573e8d3a63ac2f
+│   │   │       
+│   │   ├───d5
+│   │   │       2bf8660669b47b6a1af004a7fcc107483a37ec
+│   │   │       c9d0014477f233d2ab38a4413147d94e0de630
+│   │   │       
+│   │   ├───e4
+│   │   │       f2e2db1f2286b19ad7448a268d650f8d17aecc
+│   │   │       
+│   │   ├───e6
+│   │   │       9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+│   │   │       
+│   │   ├───e8
+│   │   │       026359287c5572d51686cd14005af77744a30e
+│   │   │       
+│   │   ├───eb
+│   │   │       9125fd9844274fde3cfaa5e5521ef320244f30
+│   │   │       c14e87a94533a57578c1b8422ba44046ceca90
+│   │   │       
+│   │   ├───ec
+│   │   │       5b8807885544637b831f228a6dc7aabb783c69
+│   │   │       
+│   │   ├───ed
+│   │   │       73560b8e87562c53ff99bec194a4e60f64dbe1
+│   │   │       
+│   │   ├───ef
+│   │   │       93ab85716e1ce7949604e834db60f978f8ea98
+│   │   │       
+│   │   ├───f0
+│   │   │       40017ae362a206517a41b3ad260d2a1886055f
+│   │   │       cd3e868cd68acfdbfac46898c89fb442be85e2
+│   │   │       e432b807cd8c1ac7802ddbf874d499b53704fc
+│   │   │       
+│   │   ├───f4
+│   │   │       b11f4ca4edee379d0d9a8599e2537d1776f495
+│   │   │       
+│   │   ├───f5
+│   │   │       198426298816822e3602f810f9769bf9746bab
+│   │   │       d6de86370641966709d78d6af58fdd9e05b4d2
+│   │   │       
+│   │   ├───f6
+│   │   │       e10275c45422403340ae7cd105c672f197c0e1
+│   │   │       
+│   │   ├───f9
+│   │   │       66c26e8e4579da7e9dead7204e6484e788fdd2
+│   │   │       
+│   │   ├───fb
+│   │   │       e8ae49d4d4e92b339c4ce02dfc1d9c5f36a104
+│   │   │       
+│   │   ├───info
+│   │   └───pack
+│   │           pack-894f975f8bc69c120061881342134c9515f49ce3.idx
+│   │           pack-894f975f8bc69c120061881342134c9515f49ce3.pack
+│   │           pack-894f975f8bc69c120061881342134c9515f49ce3.rev
+│   │           
+│   └───refs
+│       ├───heads
+│       │       main
+│       │       
+│       ├───remotes
+│       │   └───origin
+│       │           HEAD
+│       │           main
+│       │           
+│       └───tags
+├───assets
+│   ├───backgrounds
+│   ├───characters
+│   ├───fonts
+│   ├───icons
+│   ├───music
+│   ├───props
+│   └───sounds
+├───lordwolf
+│   │   __init__.py
+│   │   
+│   ├───ai
+│   │   │   animation_ai.py
+│   │   │   background_ai.py
+│   │   │   character_ai.py
+│   │   │   director_ai.py
+│   │   │   script_ai.py
+│   │   │   voice_ai.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           animation_ai.cpython-314.pyc
+│   │           background_ai.cpython-314.pyc
+│   │           character_ai.cpython-314.pyc
+│   │           director_ai.cpython-314.pyc
+│   │           script_ai.cpython-314.pyc
+│   │           voice_ai.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───animation
+│   │   │   lipsync.py
+│   │   │   motion.py
+│   │   │   rig.py
+│   │   │   timeline.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           lipsync.cpython-314.pyc
+│   │           motion.cpython-314.pyc
+│   │           rig.cpython-314.pyc
+│   │           timeline.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───audio
+│   │   │   music.py
+│   │   │   sfx.py
+│   │   │   voice.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           music.cpython-314.pyc
+│   │           sfx.cpython-314.pyc
+│   │           voice.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───core
+│   │   │   config.py
+│   │   │   logger.py
+│   │   │   project.py
+│   │   │   settings.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           config.cpython-314.pyc
+│   │           logger.cpython-314.pyc
+│   │           project.cpython-314.pyc
+│   │           settings.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───data
+│   │   │   background.py
+│   │   │   character.py
+│   │   │   project.py
+│   │   │   scene.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           background.cpython-314.pyc
+│   │           character.cpython-314.pyc
+│   │           project.cpython-314.pyc
+│   │           scene.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───engines
+│   │   │   animation_engine.py
+│   │   │   image_engine.py
+│   │   │   music_engine.py
+│   │   │   script_engine.py
+│   │   │   video_engine.py
+│   │   │   voice_engine.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           animation_engine.cpython-314.pyc
+│   │           image_engine.cpython-314.pyc
+│   │           music_engine.cpython-314.pyc
+│   │           script_engine.cpython-314.pyc
+│   │           video_engine.cpython-314.pyc
+│   │           voice_engine.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───image
+│   │   │   background.py
+│   │   │   character.py
+│   │   │   generator.py
+│   │   │   props.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           background.cpython-314.pyc
+│   │           character.cpython-314.pyc
+│   │           generator.cpython-314.pyc
+│   │           props.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───managers
+│   │   │   asset_manager.py
+│   │   │   character_manager.py
+│   │   │   project_manager.py
+│   │   │   scene_manager.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           asset_manager.cpython-314.pyc
+│   │           character_manager.cpython-314.pyc
+│   │           project_manager.cpython-314.pyc
+│   │           scene_manager.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───services
+│   │   │   ai_service.py
+│   │   │   movie_service.py
+│   │   │   project_service.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           ai_service.cpython-314.pyc
+│   │           movie_service.cpython-314.pyc
+│   │           project_service.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───ui
+│   │   │   background_panel.py
+│   │   │   character_panel.py
+│   │   │   main_window.py
+│   │   │   menu.py
+│   │   │   project_panel.py
+│   │   │   render_panel.py
+│   │   │   script_editor.py
+│   │   │   timeline.py
+│   │   │   toolbar.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           background_panel.cpython-314.pyc
+│   │           character_panel.cpython-314.pyc
+│   │           main_window.cpython-314.pyc
+│   │           menu.cpython-314.pyc
+│   │           project_panel.cpython-314.pyc
+│   │           render_panel.cpython-314.pyc
+│   │           script_editor.cpython-314.pyc
+│   │           timeline.cpython-314.pyc
+│   │           toolbar.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───utils
+│   │   │   audio_utils.py
+│   │   │   file_utils.py
+│   │   │   image_utils.py
+│   │   │   video_utils.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           audio_utils.cpython-314.pyc
+│   │           file_utils.cpython-314.pyc
+│   │           image_utils.cpython-314.pyc
+│   │           video_utils.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───video
+│   │   │   camera.py
+│   │   │   export.py
+│   │   │   renderer.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           camera.cpython-314.pyc
+│   │           export.cpython-314.pyc
+│   │           renderer.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───widgets
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           __init__.cpython-314.pyc
+│   │           
+│   └───__pycache__
+│           __init__.cpython-314.pyc
+│           
+├───models
+│   ├───animation
+│   ├───image
+│   ├───llm
+│   ├───music
+│   └───voice
+├───plugins
+│   │   plugin_base.py
+│   │   plugin_manager.py
+│   │   __init__.py
+│   │   
+│   ├───animation
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───image
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───llm
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───music
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───video
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   ├───voice
+│   │   │   loader.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           loader.cpython-314.pyc
+│   │           __init__.cpython-314.pyc
+│   │           
+│   └───__pycache__
+│           plugin_base.cpython-314.pyc
+│           plugin_manager.cpython-314.pyc
+│           __init__.cpython-314.pyc
+│           
+├───projects
+├───tests
+└───__pycache__
+        app.cpython-314.pyc
+        project_snapshot.cpython-314.pyc
+        
 
 ================================================================================
 Файл: LICENSE
@@ -3772,6 +5009,86 @@ SOFTWARE.
 
 
 ================================================================================
+Файл: lordwolf/ui/render_panel.p
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 71
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QPushButton,
+    QProgressBar,
+    QTextEdit
+)
+from PySide6.QtCore import Signal
+
+
+class RenderPanel(QWidget):
+    """
+    Панель рендерингу мультфільму.
+    """
+
+    startRender = Signal()
+    stopRender = Signal()
+
+    def __init__(self):
+        super().__init__()
+
+        self.build_ui()
+        self.connect_signals()
+
+    def build_ui(self):
+
+        layout = QVBoxLayout()
+
+        title = QLabel("📹 Рендер мультфільму")
+        title.setStyleSheet("""
+            font-size:18px;
+            font-weight:bold;
+        """)
+
+        layout.addWidget(title)
+
+        self.progress = QProgressBar()
+        self.progress.setValue(0)
+
+        layout.addWidget(self.progress)
+
+        self.log = QTextEdit()
+        self.log.setReadOnly(True)
+
+        layout.addWidget(self.log)
+
+        self.render_button = QPushButton("▶ Почати рендер")
+        self.stop_button = QPushButton("■ Зупинити")
+
+        layout.addWidget(self.render_button)
+        layout.addWidget(self.stop_button)
+
+        self.setLayout(layout)
+
+    def connect_signals(self):
+
+        self.render_button.clicked.connect(self.startRender.emit)
+        self.stop_button.clicked.connect(self.stopRender.emit)
+
+    def add_log(self, text):
+
+        self.log.append(text)
+
+    def set_progress(self, value):
+
+        self.progress.setValue(value)
+
+    def clear_log(self):
+
+        self.log.clear()
+
+================================================================================
 Файл: README.md
 ================================================================================
 Статус : НЕ ПУСТИЙ
@@ -3786,12 +5103,18 @@ Open-source AI platform for creating animated movies.
 ================================================================================
 Файл: requirements.txt
 ================================================================================
-Статус : ПУСТИЙ
-Рядків : 0
+Статус : НЕ ПУСТИЙ
+Рядків : 7
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
-(порожній файл)
+PySide6>=6.6.0
+gtts>=2.5.0
+mutagen>=1.47.0
+Pillow>=10.0.0
+moviepy>=1.0.0
+numpy>=1.24.0
+opencv-python-headless>=4.8.0
 
 ================================================================================
 Файл: ui_dump.txt
@@ -4250,6 +5573,6 @@ class MainWindow(QMainWindow):
 ================================================================================
 СТАТИСТИКА
 ================================================================================
-Всього файлів : 90
-Заповнених    : 38
+Всього файлів : 92
+Заповнених    : 40
 Порожніх      : 52

@@ -63,3 +63,7 @@ class BackgroundPanel(QWidget):
                 name = str(background)
 
             self.list_widget.addItem(name)
+
+    def clear(self):
+        self.backgrounds = []
+        self.list_widget.clear()

@@ -64,3 +64,7 @@ class TimelinePanel(QWidget):
             else:
 
                 self.list_widget.addItem(str(scene))
+
+    def clear(self):
+        self.scenes = []
+        self.list_widget.clear()

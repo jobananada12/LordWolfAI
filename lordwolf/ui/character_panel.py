@@ -39,7 +39,6 @@ class CharacterPanel(QWidget):
         self.layout.addWidget(self.title)
         self.layout.addWidget(self.list_widget)
 
-    # 🔥 НОВИЙ МЕТОД ДЛЯ MAIN WINDOW
     def update_characters(self, characters):
 
         self.characters = characters
@@ -59,3 +58,7 @@ class CharacterPanel(QWidget):
                 name = str(char)
 
             self.list_widget.addItem(name)
+
+    def clear(self):
+        self.characters = []
+        self.list_widget.clear()
