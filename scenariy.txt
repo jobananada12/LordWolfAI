@@ -1,3 +1,11 @@
+sk_7ed7f2945b9079908cd4df02064e1f09a28301e2b329db0f
+
+Remove-Item -Path assets -Recurse -Force
+Remove-Item -Path output -Recurse -Force
+Remove-Item -Path audio_output -Recurse -Force
+
+python app.py
+
 СЦЕНА 1
 
 Лорд Вовк сидить у замку біля каміна.

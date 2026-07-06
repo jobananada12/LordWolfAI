@@ -16,52 +16,52 @@ LordWolfAI
 │   │   └── Lord_Vovk.png
 │   └── props
 ├── audio_output
-│   ├── voice_1783281388284.mp3
-│   ├── voice_1783281388561.mp3
-│   ├── voice_1783281388856.mp3
-│   ├── voice_1783281389132.mp3
-│   ├── voice_1783281389534.mp3
-│   ├── voice_1783281389761.mp3
-│   ├── voice_1783281390069.mp3
-│   ├── voice_1783281390690.mp3
-│   ├── voice_1783281390990.mp3
-│   ├── voice_1783281391304.mp3
-│   ├── voice_1783281391638.mp3
-│   ├── voice_1783281391840.mp3
-│   ├── voice_1783281392160.mp3
-│   ├── voice_1783281392485.mp3
-│   ├── voice_1783281392745.mp3
-│   ├── voice_1783281393015.mp3
-│   ├── voice_1783281393300.mp3
-│   ├── voice_1783281393610.mp3
-│   ├── voice_1783281393851.mp3
-│   ├── voice_1783281394204.mp3
-│   ├── voice_1783281394447.mp3
-│   ├── voice_1783281394775.mp3
-│   ├── voice_1783281395082.mp3
-│   ├── voice_1783281404414.mp3
-│   ├── voice_1783281404815.mp3
-│   ├── voice_1783281405054.mp3
-│   ├── voice_1783281405457.mp3
-│   ├── voice_1783281405733.mp3
-│   ├── voice_1783281406023.mp3
-│   ├── voice_1783281406264.mp3
-│   ├── voice_1783281406566.mp3
-│   ├── voice_1783281406788.mp3
-│   ├── voice_1783281407218.mp3
-│   ├── voice_1783281407486.mp3
-│   ├── voice_1783281407740.mp3
-│   ├── voice_1783281408036.mp3
-│   ├── voice_1783281408284.mp3
-│   ├── voice_1783281408603.mp3
-│   ├── voice_1783281408837.mp3
-│   ├── voice_1783281409175.mp3
-│   ├── voice_1783281409435.mp3
-│   ├── voice_1783281409725.mp3
-│   ├── voice_1783281410013.mp3
-│   ├── voice_1783281410269.mp3
-│   ├── voice_1783281410562.mp3
-│   └── voice_1783281410773.mp3
+│   ├── voice_1783336816151.mp3
+│   ├── voice_1783336817064.mp3
+│   ├── voice_1783336818104.mp3
+│   ├── voice_1783336819163.mp3
+│   ├── voice_1783336820289.mp3
+│   ├── voice_1783336821126.mp3
+│   ├── voice_1783336821986.mp3
+│   ├── voice_1783336822972.mp3
+│   ├── voice_1783336823882.mp3
+│   ├── voice_1783336824764.mp3
+│   ├── voice_1783336825692.mp3
+│   ├── voice_1783336826519.mp3
+│   ├── voice_1783336827690.mp3
+│   ├── voice_1783336828587.mp3
+│   ├── voice_1783336829660.mp3
+│   ├── voice_1783336830528.mp3
+│   ├── voice_1783336831531.mp3
+│   ├── voice_1783336832429.mp3
+│   ├── voice_1783336833520.mp3
+│   ├── voice_1783336834366.mp3
+│   ├── voice_1783336835241.mp3
+│   ├── voice_1783336836297.mp3
+│   ├── voice_1783336837134.mp3
+│   ├── voice_1783336844588.mp3
+│   ├── voice_1783336845456.mp3
+│   ├── voice_1783336846507.mp3
+│   ├── voice_1783336847425.mp3
+│   ├── voice_1783336848346.mp3
+│   ├── voice_1783336849176.mp3
+│   ├── voice_1783336850074.mp3
+│   ├── voice_1783336851050.mp3
+│   ├── voice_1783336851891.mp3
+│   ├── voice_1783336852721.mp3
+│   ├── voice_1783336853638.mp3
+│   ├── voice_1783336854434.mp3
+│   ├── voice_1783336855385.mp3
+│   ├── voice_1783336856254.mp3
+│   ├── voice_1783336857105.mp3
+│   ├── voice_1783336857954.mp3
+│   ├── voice_1783336858828.mp3
+│   ├── voice_1783336859931.mp3
+│   ├── voice_1783336861074.mp3
+│   ├── voice_1783336861967.mp3
+│   ├── voice_1783336862832.mp3
+│   ├── voice_1783336863681.mp3
+│   └── voice_1783336864496.mp3
 ├── lordwolf
 │   ├── ai
 │   │   ├── __init__.py
@@ -177,6 +177,35 @@ LordWolfAI
 │   ├── plugin_base.py
 │   └── plugin_manager.py
 ├── projects
+├── test_assets
+│   ├── Blondynka.png
+│   ├── Chaklun.png
+│   ├── Drakon.png
+│   └── Lord_Vovk.png
+├── test_audio
+│   ├── voice_1783282061996.mp3
+│   ├── voice_1783282062278.mp3
+│   ├── voice_1783282062570.mp3
+│   ├── voice_1783282062935.mp3
+│   ├── voice_1783282063241.mp3
+│   ├── voice_1783282063500.mp3
+│   ├── voice_1783282063781.mp3
+│   ├── voice_1783282064048.mp3
+│   ├── voice_1783282064407.mp3
+│   ├── voice_1783282064741.mp3
+│   ├── voice_1783282065083.mp3
+│   ├── voice_1783282065314.mp3
+│   ├── voice_1783282065617.mp3
+│   ├── voice_1783282065865.mp3
+│   ├── voice_1783282066179.mp3
+│   ├── voice_1783282066498.mp3
+│   ├── voice_1783282066790.mp3
+│   ├── voice_1783282067086.mp3
+│   ├── voice_1783282067319.mp3
+│   ├── voice_1783282067644.mp3
+│   ├── voice_1783282067883.mp3
+│   ├── voice_1783282068233.mp3
+│   └── voice_1783282068510.mp3
 ├── tests
 ├── app.py
 ├── comands.txt
@@ -185,6 +214,9 @@ LordWolfAI
 ├── project_snapshot.txt
 ├── README.md
 ├── requirements.txt
+├── scenariy.txt
+├── test_movie.mp4
+├── test_simple.py
 └── ui_dump.txt
 
 
@@ -654,41 +686,53 @@ class CharacterAI:
 Файл: lordwolf/ai/director_ai.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 139
+Рядків : 138
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Director AI - БЕЗ ФІКСОВАНОЇ ТРИВАЛОСТІ
+"""
+
 from pathlib import Path
 from lordwolf.ai.script_ai import ScriptAI
 from lordwolf.ai.character_ai import CharacterAI
 from lordwolf.ai.background_ai import BackgroundAI
 from lordwolf.ai.animation_ai import AnimationAI
 from lordwolf.ai.voice_ai import VoiceAI
+
 from lordwolf.data.project import MovieProject
+
 from lordwolf.engines.voice_engine import VoiceEngine
 from lordwolf.engines.image_engine import ImageEngine
 from lordwolf.engines.video_engine import VideoEngine
 
 
 class DirectorAI:
+    """
+    Головний координатор AI.
+    """
+
     def __init__(self):
         self.script_ai = ScriptAI()
         self.character_ai = CharacterAI()
         self.background_ai = BackgroundAI()
         self.animation_ai = AnimationAI()
         self.voice_ai = VoiceAI()
+
         self.voice_engine = VoiceEngine()
         self.image_engine = ImageEngine()
         self.video_engine = VideoEngine()
+
         self.project = MovieProject()
         self.dialog_list = []
 
     def create_movie(self, script):
         print("[INFO] DirectorAI: Початок")
-        
-        # 🔥 ОЧИЩУЄМО ВСЕ ПЕРЕД СТВОРЕННЯМ НОВОГО ПРОЄКТУ
+
         self.dialog_list = []
-        self.video_engine.clear()  # ← ОСЬ ЦЕ ВАЖЛИВО!
+        self.video_engine.clear()
         self.project.clear()
         self.project.script = script
 
@@ -718,12 +762,6 @@ class DirectorAI:
 
     def _collect_dialogs(self):
         for scene in self.project.scenes:
-            bg_name = None
-            if scene.backgrounds:
-                bg_name = scene.backgrounds[0]
-            elif self.project.backgrounds:
-                bg_name = self.project.backgrounds[0].name
-
             for action in scene.actions:
                 if ":" not in action:
                     continue
@@ -744,7 +782,6 @@ class DirectorAI:
                     self.dialog_list.append({
                         "speaker": speaker,
                         "text": text,
-                        "background": bg_name,
                         "audio_path": None
                     })
                     print(f"[DIALOG] {speaker}: {text[:40]}...")
@@ -759,34 +796,28 @@ class DirectorAI:
 
     def _create_video(self):
         print(f"[INFO] Створення {len(self.dialog_list)} сцен")
+
         for dialog in self.dialog_list:
             speaker = dialog["speaker"]
             audio_path = dialog["audio_path"]
-            bg_name = dialog["background"]
 
             char_path = None
             for char in self.project.characters:
                 if char.name == speaker:
                     char_path = char.image_path
                     break
+
             if not char_path:
                 char_path = str(self.image_engine.characters_path / "default.png")
 
-            bg_path = None
-            if bg_name:
-                for bg in self.project.backgrounds:
-                    if bg.name == bg_name:
-                        bg_path = bg.image_path
-                        break
-            if not bg_path and self.project.backgrounds:
-                bg_path = self.project.backgrounds[0].image_path
-            if not bg_path:
-                bg_path = str(self.image_engine.backgrounds_path / "default.png")
-
+            # 🔥 НЕ ПЕРЕДАЄМО duration, щоб він визначився з аудіо
             self.video_engine.create_scene(
                 image_path=char_path,
                 audio_path=audio_path
             )
+
+        self.video_engine.add_end_pause(2.0)
+        print("[INFO] Фінальна пауза: 2.0с")
 
     def render_movie(self, filename="movie.mp4"):
         return self.video_engine.render_movie(filename)
@@ -795,7 +826,7 @@ class DirectorAI:
         self.project.clear()
         self.character_ai.clear()
         self.background_ai.clear()
-        self.video_engine.clear()  # ← ДОДАВ ОЧИЩЕННЯ
+        self.video_engine.clear()
         self.dialog_list = []
 
 ================================================================================
@@ -2138,15 +2169,21 @@ class ScriptEngine:
 Файл: lordwolf/engines/video_engine.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 146
+Рядків : 197
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
+"""
+LordWolf AI Studio
+Video Engine - АВТОМАТИЧНА ТРИВАЛІСТЬ З АУДІО
+"""
+
 from pathlib import Path
 import cv2
 import subprocess
 import tempfile
 from mutagen.mp3 import MP3
+import numpy as np
 
 
 class VideoEngine:
@@ -2154,13 +2191,19 @@ class VideoEngine:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.scenes = []
+        self.end_pause = 0.0
 
-    def create_scene(self, image_path, audio_path=None, duration=5.0):
+    def create_scene(self, image_path, audio_path=None, duration=None):
         self.scenes.append({
             "image": image_path,
             "audio": audio_path,
-            "duration": duration
+            "duration": duration  # якщо None, визначиться автоматично
         })
+        print(f"[DEBUG] Додано сцену: {Path(image_path).name} | аудіо: {Path(audio_path).name if audio_path else 'None'}")
+
+    def add_end_pause(self, duration):
+        self.end_pause = duration
+        print(f"[DEBUG] Встановлено фінальну паузу: {duration}с")
 
     def render_movie(self, filename="lordwolf_movie.mp4", fps=24):
         if not self.scenes:
@@ -2182,52 +2225,89 @@ class VideoEngine:
         h, w = img.shape[:2]
         print(f"[INFO] Розмір: {w}x{h}")
 
+        black_frame = np.zeros((h, w, 3), dtype=np.uint8)
         output_path = self.output_dir / filename
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
             audio_files = []
             total_frames = 0
+            total_duration = 0.0
 
             for i, scene in enumerate(self.scenes):
                 print(f"[INFO] Сцена {i+1}/{len(self.scenes)}")
 
                 img_path = scene["image"]
                 if not Path(img_path).exists():
+                    print(f"[WARNING] Зображення не знайдено: {img_path}")
                     continue
 
                 img = cv2.imread(str(img_path))
                 if img is None:
+                    print(f"[WARNING] Не вдалося завантажити: {img_path}")
                     continue
 
                 if img.shape[1] != w or img.shape[0] != h:
                     img = cv2.resize(img, (w, h))
 
-                duration = scene.get("duration", 5.0)
                 audio_path = scene.get("audio")
+                duration = scene.get("duration")
 
-                if audio_path and Path(audio_path).exists():
-                    try:
-                        audio = MP3(audio_path)
-                        duration = max(duration, audio.info.length)
-                        audio_files.append(audio_path)
-                        print(f"[INFO]   Аудіо: {Path(audio_path).name} ({audio.info.length:.2f}с)")
-                    except:
-                        pass
+                # 🔥 Якщо duration не задано - беремо з аудіо
+                if duration is None:
+                    if audio_path and Path(audio_path).exists():
+                        try:
+                            audio = MP3(audio_path)
+                            duration = audio.info.length
+                            print(f"[INFO]   Аудіо: {Path(audio_path).name} ({duration:.2f}с)")
+                            audio_files.append(audio_path)
+                        except Exception as e:
+                            print(f"[WARNING] Не вдалося прочитати аудіо: {e}")
+                            duration = 3.0
+                    else:
+                        duration = 3.0
+                        print(f"[INFO]   Аудіо: відсутнє, duration={duration:.2f}с")
+                else:
+                    # Якщо duration задано, але аудіо довше - використовуємо більше
+                    if audio_path and Path(audio_path).exists():
+                        try:
+                            audio = MP3(audio_path)
+                            if audio.info.length > duration:
+                                duration = audio.info.length
+                            audio_files.append(audio_path)
+                            print(f"[INFO]   Аудіо: {Path(audio_path).name} ({audio.info.length:.2f}с)")
+                        except:
+                            pass
+
+                # Якщо все ще duration не визначено
+                if duration is None or duration == 0:
+                    duration = 3.0
 
                 num_frames = int(duration * fps)
-                print(f"[INFO]   Кадрів: {num_frames}")
+                print(f"[INFO]   Тривалість: {duration:.2f}с, кадрів: {num_frames}")
+                total_duration += duration
 
                 for _ in range(num_frames):
                     frame_path = tmp_path / f"frame_{total_frames:06d}.png"
                     cv2.imwrite(str(frame_path), img)
                     total_frames += 1
 
+            # Фінальна пауза
+            if self.end_pause > 0:
+                end_frames = int(self.end_pause * fps)
+                print(f"[INFO] Фінальна пауза: {self.end_pause:.2f}с ({end_frames} кадрів)")
+                for _ in range(end_frames):
+                    frame_path = tmp_path / f"frame_{total_frames:06d}.png"
+                    cv2.imwrite(str(frame_path), black_frame)
+                    total_frames += 1
+                total_duration += self.end_pause
+
             if total_frames == 0:
                 print("[ERROR] Немає кадрів")
                 return None
 
             print(f"[INFO] Всього кадрів: {total_frames}")
+            print(f"[INFO] Загальна тривалість: {total_duration:.2f}с")
 
             video_only = tmp_path / "video_only.mp4"
             cmd = [
@@ -2288,67 +2368,138 @@ class VideoEngine:
 
     def clear(self):
         self.scenes.clear()
+        self.end_pause = 0.0
+        print("[DEBUG] Очищено сцени")
 
 ================================================================================
 Файл: lordwolf/engines/voice_engine.py
 ================================================================================
 Статус : НЕ ПУСТИЙ
-Рядків : 58
+Рядків : 127
 --------------------------------------------------------------------------------
 ВМІСТ ФАЙЛУ
 --------------------------------------------------------------------------------
 """
 LordWolf AI Studio
-Voice Engine
+Voice Engine - ІНТЕЛЕКТУАЛЬНИЙ ПІДБІР ГОЛОСІВ
 """
 
 from pathlib import Path
-from gtts import gTTS
 import time
-
+from elevenlabs.client import ElevenLabs
 
 class VoiceEngine:
-    """
-    Рушій озвучення персонажів.
-    Використовує gTTS для генерації голосу.
-    """
-
     def __init__(self, output_dir="audio_output"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.audio_files = []
 
-    def generate_voice(self, text: str, voice_name: str = "Narrator") -> str:
-        """
-        Генерує аудіофайл з тексту.
-        """
+        self.api_key = "sk_7ed7f2945b9079908cd4df02064e1f09a28301e2b329db0f"
+        self.client = ElevenLabs(api_key=self.api_key)
+
+        # Отримуємо голоси з описами
+        try:
+            response = self.client.voices.search()
+            self.voices = response.voices
+            self.voice_dict = {v.name: v.voice_id for v in self.voices}
+            print("[INFO] ElevenLabs: підключено!")
+            print(f"[INFO] Доступно голосів: {len(self.voices)}")
+            for v in self.voices[:10]:
+                print(f"  - {v.name} (ID: {v.voice_id[:8]}...)")
+        except Exception as e:
+            print(f"[ERROR] Не вдалося отримати голоси: {e}")
+            self.voices = []
+            self.voice_dict = {}
+
+        # Словник характеристик персонажів (автоматичний аналіз)
+        self.personality_map = {
+            "Лорд Вовк": {"gender": "male", "age": "adult", "type": "wolf_leader"},
+            "Вовк": {"gender": "male", "age": "adult", "type": "wolf_leader"},
+            "Дракон": {"gender": "male", "age": "ancient", "type": "dragon"},
+            "Чаклун": {"gender": "male", "age": "old", "type": "wizard"},
+            "Король": {"gender": "male", "age": "adult", "type": "king"},
+            "Лицар": {"gender": "male", "age": "young", "type": "knight"},
+            "Монстр": {"gender": "male", "age": "ancient", "type": "monster"},
+            "Блондинка": {"gender": "female", "age": "young", "type": "young_female"},
+            "Брюнетка": {"gender": "female", "age": "young", "type": "mature_female"},
+            "Королева": {"gender": "female", "age": "adult", "type": "queen"},
+            "Дівчинка": {"gender": "female", "age": "child", "type": "child"},
+            "Відьма": {"gender": "female", "age": "old", "type": "witch"},
+            "Оповідач": {"gender": "male", "age": "adult", "type": "narrator"},
+        }
+
+        # Маппінг типів на голоси (автоматичний вибір)
+        self.type_voice_map = {
+            "wolf_leader": self._find_voice(["Roger", "Charlie", "George"]),
+            "dragon": self._find_voice(["Harry", "Charlie", "Roger"]),
+            "wizard": self._find_voice(["George", "Callum", "Roger"]),
+            "king": self._find_voice(["Charlie", "Roger", "George"]),
+            "knight": self._find_voice(["Charlie", "Harry", "Roger"]),
+            "monster": self._find_voice(["Harry", "Charlie", "Roger"]),
+            "young_female": self._find_voice(["Sarah", "Laura", "Alice"]),
+            "mature_female": self._find_voice(["Alice", "Laura", "Sarah"]),
+            "queen": self._find_voice(["Laura", "Alice", "Sarah"]),
+            "child": self._find_voice(["Sarah", "Laura", "Alice"]),
+            "witch": self._find_voice(["Laura", "Alice", "Sarah"]),
+            "narrator": self._find_voice(["George", "Roger", "Charlie"]),
+        }
+
+        self.default_voice_id = self.voices[0].voice_id if self.voices else None
+        self.voice_map = {}
+
+    def _find_voice(self, preferred_names):
+        for name in preferred_names:
+            if name in self.voice_dict:
+                return self.voice_dict[name]
+        if self.voices:
+            return self.voices[0].voice_id
+        return None
+
+    def _get_voice_for_character(self, character_name):
+        """Підбирає голос на основі характеристик персонажа"""
+        # 1. Отримуємо характеристики персонажа
+        character_info = self.personality_map.get(character_name, {})
+        if not character_info:
+            return self.default_voice_id
+
+        # 2. Отримуємо голос за типом
+        voice_id = self.type_voice_map.get(character_info.get("type"), self.default_voice_id)
+        return voice_id
+
+    def generate_character_voice(self, text: str, character_name: str) -> str:
         clean_text = text.strip()
         if not clean_text:
-            return ""
+            return None
+
+        # Автоматичний підбір голосу
+        voice_id = self._get_voice_for_character(character_name)
+        if not voice_id:
+            print(f"[ERROR] Немає голосу для {character_name}")
+            return None
 
         timestamp = int(time.time() * 1000)
         filename = f"voice_{timestamp}.mp3"
         filepath = self.output_dir / filename
 
         try:
-            tts = gTTS(text=clean_text, lang="uk", slow=False)
-            tts.save(str(filepath))
+            audio_generator = self.client.text_to_speech.convert(
+                voice_id=voice_id,
+                text=clean_text,
+                model_id="eleven_multilingual_v2",
+                output_format="mp3_44100_128",
+                language_code="uk",
+            )
+            audio_bytes = b''.join(audio_generator)
+            with open(filepath, "wb") as f:
+                f.write(audio_bytes)
             self.audio_files.append(str(filepath))
+            print(f"[VOICE] {character_name} -> голос підібрано автоматично")
             return str(filepath)
         except Exception as e:
-            print(f"[ERROR] Не вдалося згенерувати голос: {e}")
-            return ""
-
-    def generate_character_voice(self, text: str, character_name: str) -> str:
-        """
-        Генерує голос для конкретного персонажа.
-        """
-        return self.generate_voice(text, character_name)
+            print(f"[ERROR] {character_name}: {e}")
+            return None
 
     def clear_cache(self):
-        """
-        Видаляє всі згенеровані аудіофайли.
-        """
         for filepath in self.audio_files:
             try:
                 Path(filepath).unlink()
@@ -4215,6 +4366,408 @@ print(f"Файл: {OUTPUT}")
 print("========================================")
 
 ================================================================================
+Файл: test_simple.py
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 393
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+"""
+TEST SIMPLE - Мінімальний тест для перевірки логіки
+"""
+
+import os
+import re
+from pathlib import Path
+import cv2
+import subprocess
+import tempfile
+from PIL import Image, ImageDraw, ImageFont
+from gtts import gTTS
+import time
+from mutagen.mp3 import MP3
+
+# ============================================
+# 0. ТРАНСЛІТЕРАЦІЯ ДЛЯ ІМЕН ФАЙЛІВ
+# ============================================
+
+def slugify(name: str) -> str:
+    """Перетворює кирилицю в латиницю для безпечних імен файлів."""
+    translit_map = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'h', 'ґ': 'g',
+        'д': 'd', 'е': 'e', 'є': 'ye', 'ж': 'zh', 'з': 'z',
+        'и': 'y', 'і': 'i', 'ї': 'yi', 'й': 'y', 'к': 'k',
+        'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p',
+        'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f',
+        'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
+        'ь': '', 'ю': 'yu', 'я': 'ya',
+        'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'H', 'Ґ': 'G',
+        'Д': 'D', 'Е': 'E', 'Є': 'Ye', 'Ж': 'Zh', 'З': 'Z',
+        'И': 'Y', 'І': 'I', 'Ї': 'Yi', 'Й': 'Y', 'К': 'K',
+        'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P',
+        'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F',
+        'Х': 'Kh', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Shch',
+        'Ь': '', 'Ю': 'Yu', 'Я': 'Ya'
+    }
+    result = ''
+    for char in name:
+        if char in translit_map:
+            result += translit_map[char]
+        elif char.isalnum() or char == ' ':
+            result += char
+        else:
+            result += ''
+    result = result.replace(' ', '_')
+    result = re.sub(r'[^a-zA-Z0-9_]', '', result)
+    return result
+
+# ============================================
+# 1. СЦЕНАРІЙ (ваш текст)
+# ============================================
+SCRIPT = """
+СЦЕНА 1
+
+Лорд Вовк сидить у замку біля каміна.
+
+У двері стукають.
+
+Лорд Вовк: Хто там?
+
+Заходить Блондинка.
+
+Блондинка: Добрий вечір, пане Лорде!
+
+Лорд Вовк: О, Блондинка! Які вітри тебе занесли?
+
+Блондинка: Мені потрібна твоя допомога!
+
+СЦЕНА 2
+
+Лорд Вовк і Блондинка йдуть через ліс.
+
+Лорд Вовк: Куди ми йдемо?
+
+Блондинка: До печери Дракона!
+
+Раптом вони чують гучний звук.
+
+Дракон: Хто сміє наближатися до моєї печери?
+
+СЦЕНА 3
+
+Лорд Вовк і Блондинка стоять перед печерою.
+
+Лорд Вовк: Ми прийшли з миром!
+
+Дракон: Я вам не вірю!
+
+Блондинка: Ми хочемо попросити тебе про допомогу.
+
+Дракон: Говоріть!
+
+Лорд Вовк: У королівстві з'явився злий чаклун.
+
+Дракон: Я знаю про цього чаклуна!
+
+СЦЕНА 4
+
+Лорд Вовк, Блондинка і Дракон летять над лісом.
+
+Блондинка: Я так боюся висоти!
+
+Лорд Вовк: Не бійся, це чудово!
+
+Дракон: Я відчуваю злого чаклуна!
+
+Лорд Вовк: Он він, біля старого замку!
+
+СЦЕНА 5
+
+Чаклун стоїть біля замку.
+
+Чаклун: Ви не переможете мене!
+
+Дракон: Ми покажемо тобі!
+
+Лорд Вовк: Разом ми сильніші!
+
+Блондинка: Ми переможемо зло!
+
+Всі разом кидаються на чаклуна.
+
+Дракон: Перемога за нами!
+
+Лорд Вовк: Ми врятували королівство!
+
+Кінець.
+"""
+
+# ============================================
+# 2. ПАРСИНГ СЦЕНАРІЮ
+# ============================================
+
+def parse_script(script_text):
+    """
+    Парсить сценарій і повертає список діалогів.
+    Кожен діалог = {"speaker": "ім'я", "text": "текст"}
+    """
+    dialogs = []
+    lines = script_text.strip().splitlines()
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        
+        if ":" in line:
+            parts = line.split(":", 1)
+            speaker = parts[0].strip()
+            text = parts[1].strip()
+            
+            if speaker.upper() != "СЦЕНА" and speaker.lower() != "кінець":
+                dialogs.append({
+                    "speaker": speaker,
+                    "text": text
+                })
+    
+    return dialogs
+
+# ============================================
+# 3. ГЕНЕРАЦІЯ ЗОБРАЖЕНЬ ПЕРСОНАЖІВ
+# ============================================
+
+def generate_character_image(name, output_dir="test_assets"):
+    """
+    Створює просте зображення персонажа з іменем.
+    Використовує транскрипцію для імені файлу.
+    """
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    
+    # Кольори для різних персонажів
+    colors = {
+        "Лорд Вовк": (80, 40, 120),
+        "Блондинка": (255, 200, 100),
+        "Дракон": (200, 50, 0),
+        "Чаклун": (50, 50, 150),
+    }
+    
+    color = colors.get(name, (100, 100, 100))
+    
+    img = Image.new("RGB", (256, 256), color=color)
+    draw = ImageDraw.Draw(img)
+    
+    try:
+        font = ImageFont.truetype("arial.ttf", 24)
+    except:
+        font = ImageFont.load_default()
+    
+    draw.text((10, 120), name, fill="white", font=font)
+    
+    # 🔥 ВИКОРИСТОВУЄМО ТРАНСКРИПЦІЮ ДЛЯ ІМЕНІ ФАЙЛУ
+    safe_name = slugify(name)
+    file_path = output_path / f"{safe_name}.png"
+    img.save(file_path)
+    return str(file_path)
+
+# ============================================
+# 4. ГЕНЕРАЦІЯ АУДІО
+# ============================================
+
+def generate_audio(text, speaker, output_dir="test_audio"):
+    """
+    Генерує аудіофайл для тексту.
+    """
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    
+    timestamp = int(time.time() * 1000)
+    filename = f"voice_{timestamp}.mp3"
+    filepath = output_path / filename
+    
+    try:
+        tts = gTTS(text=text, lang="uk", slow=False)
+        tts.save(str(filepath))
+        return str(filepath)
+    except Exception as e:
+        print(f"[ERROR] {e}")
+        return None
+
+# ============================================
+# 5. СТВОРЕННЯ ВІДЕО
+# ============================================
+
+def create_video(dialogs, output_filename="test_movie.mp4", fps=24):
+    """
+    Створює відео з діалогів.
+    """
+    print(f"[INFO] Створення відео з {len(dialogs)} діалогів")
+    
+    # Генеруємо зображення та аудіо
+    audio_files = []
+    image_files = []
+    scenes = []
+    
+    for i, dialog in enumerate(dialogs):
+        speaker = dialog["speaker"]
+        text = dialog["text"]
+        
+        print(f"[INFO] Діалог {i+1}: {speaker} -> {text[:30]}...")
+        
+        # Зображення персонажа
+        img_path = generate_character_image(speaker)
+        image_files.append(img_path)
+        
+        # Аудіо
+        audio_path = generate_audio(text, speaker)
+        if audio_path:
+            audio_files.append(audio_path)
+            try:
+                audio = MP3(audio_path)
+                duration = audio.info.length
+            except:
+                duration = 3.0
+        else:
+            duration = 3.0
+        
+        scenes.append({
+            "image": img_path,
+            "audio": audio_path,
+            "duration": duration
+        })
+    
+    # Створюємо відео
+    first_img = cv2.imread(scenes[0]["image"])
+    if first_img is None:
+        print("[ERROR] Не вдалося завантажити перше зображення")
+        return None
+        
+    h, w = first_img.shape[:2]
+    
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        total_frames = 0
+        all_audio = []
+        
+        for i, scene in enumerate(scenes):
+            img = cv2.imread(scene["image"])
+            if img is None:
+                print(f"[WARNING] Не вдалося завантажити зображення для сцени {i+1}")
+                continue
+            
+            if img.shape[1] != w or img.shape[0] != h:
+                img = cv2.resize(img, (w, h))
+            
+            duration = scene["duration"]
+            audio_path = scene["audio"]
+            
+            if audio_path and Path(audio_path).exists():
+                all_audio.append(audio_path)
+                try:
+                    audio = MP3(audio_path)
+                    duration = max(duration, audio.info.length)
+                except:
+                    pass
+            
+            num_frames = int(duration * fps)
+            for _ in range(num_frames):
+                frame_path = tmp_path / f"frame_{total_frames:06d}.png"
+                cv2.imwrite(str(frame_path), img)
+                total_frames += 1
+        
+        if total_frames == 0:
+            print("[ERROR] Немає кадрів")
+            return None
+        
+        print(f"[INFO] Всього кадрів: {total_frames}")
+        
+        # Створюємо відео без звуку
+        video_only = tmp_path / "video_only.mp4"
+        cmd = [
+            "ffmpeg", "-y",
+            "-framerate", str(fps),
+            "-i", str(tmp_path / "frame_%06d.png"),
+            "-c:v", "libx264",
+            "-pix_fmt", "yuv420p",
+            str(video_only)
+        ]
+        subprocess.run(cmd, capture_output=True, check=True)
+        
+        # Додаємо звук
+        output_path = Path(output_filename)
+        if all_audio:
+            print(f"[INFO] Додавання звуку ({len(all_audio)} файлів)")
+            
+            list_file = tmp_path / "audio_list.txt"
+            with open(list_file, "w") as f:
+                for af in all_audio:
+                    f.write(f"file '{Path(af).absolute()}'\n")
+            
+            combined = tmp_path / "combined.mp3"
+            cmd = [
+                "ffmpeg", "-y",
+                "-f", "concat",
+                "-safe", "0",
+                "-i", str(list_file),
+                "-c", "copy",
+                str(combined)
+            ]
+            subprocess.run(cmd, capture_output=True, check=True)
+            
+            if combined.exists():
+                cmd = [
+                    "ffmpeg", "-y",
+                    "-i", str(video_only),
+                    "-i", str(combined),
+                    "-c:v", "copy",
+                    "-c:a", "aac",
+                    "-shortest",
+                    str(output_path)
+                ]
+                subprocess.run(cmd, capture_output=True, check=True)
+                print("[INFO] Звук додано")
+            else:
+                import shutil
+                shutil.copy(video_only, output_path)
+        else:
+            import shutil
+            shutil.copy(video_only, output_path)
+    
+    if output_path.exists():
+        size = output_path.stat().st_size / 1024 / 1024
+        print(f"[SUCCESS] Відео: {output_path} ({size:.2f} MB)")
+        return str(output_path)
+    
+    return None
+
+# ============================================
+# 6. ГОЛОВНА ФУНКЦІЯ
+# ============================================
+
+def main():
+    print("=" * 60)
+    print("ТЕСТОВИЙ ПРОЕКТ: Парсинг сценарію + відео")
+    print("=" * 60)
+    
+    dialogs = parse_script(SCRIPT)
+    print(f"\n[INFO] Знайдено {len(dialogs)} діалогів:\n")
+    
+    for i, d in enumerate(dialogs):
+        print(f"  {i+1:02d}. {d['speaker']}: {d['text'][:40]}...")
+    
+    video_path = create_video(dialogs, "test_movie.mp4")
+    
+    if video_path:
+        print(f"\n[SUCCESS] Відео створено: {video_path}")
+        print(f"[INFO] Відкрийте файл у плеєрі")
+    else:
+        print("\n[ERROR] Не вдалося створити відео")
+
+if __name__ == "__main__":
+    main()
+
+================================================================================
 Файл: comands.txt
 ================================================================================
 Статус : НЕ ПУСТИЙ
@@ -5117,6 +5670,98 @@ numpy>=1.24.0
 opencv-python-headless>=4.8.0
 
 ================================================================================
+Файл: scenariy.txt
+================================================================================
+Статус : НЕ ПУСТИЙ
+Рядків : 83
+--------------------------------------------------------------------------------
+ВМІСТ ФАЙЛУ
+--------------------------------------------------------------------------------
+sk_7ed7f2945b9079908cd4df02064e1f09a28301e2b329db0f
+
+Remove-Item -Path assets -Recurse -Force
+Remove-Item -Path output -Recurse -Force
+Remove-Item -Path audio_output -Recurse -Force
+
+python app.py
+
+СЦЕНА 1
+
+Лорд Вовк сидить у замку біля каміна.
+
+У двері стукають.
+
+Лорд Вовк: Хто там?
+
+Заходить Блондинка.
+
+Блондинка: Добрий вечір, пане Лорде!
+
+Лорд Вовк: О, Блондинка! Які вітри тебе занесли?
+
+Блондинка: Мені потрібна твоя допомога!
+
+СЦЕНА 2
+
+Лорд Вовк і Блондинка йдуть через ліс.
+
+Лорд Вовк: Куди ми йдемо?
+
+Блондинка: До печери Дракона!
+
+Раптом вони чують гучний звук.
+
+Дракон: Хто сміє наближатися до моєї печери?
+
+СЦЕНА 3
+
+Лорд Вовк і Блондинка стоять перед печерою.
+
+Лорд Вовк: Ми прийшли з миром!
+
+Дракон: Я вам не вірю!
+
+Блондинка: Ми хочемо попросити тебе про допомогу.
+
+Дракон: Говоріть!
+
+Лорд Вовк: У королівстві з'явився злий чаклун.
+
+Дракон: Я знаю про цього чаклуна!
+
+СЦЕНА 4
+
+Лорд Вовк, Блондинка і Дракон летять над лісом.
+
+Блондинка: Я так боюся висоти!
+
+Лорд Вовк: Не бійся, це чудово!
+
+Дракон: Я відчуваю злого чаклуна!
+
+Лорд Вовк: Он він, біля старого замку!
+
+СЦЕНА 5
+
+Чаклун стоїть біля замку.
+
+Чаклун: Ви не переможете мене!
+
+Дракон: Ми покажемо тобі!
+
+Лорд Вовк: Разом ми сильніші!
+
+Блондинка: Ми переможемо зло!
+
+Всі разом кидаються на чаклуна.
+
+Дракон: Перемога за нами!
+
+Лорд Вовк: Ми врятували королівство!
+
+Кінець.
+
+================================================================================
 Файл: ui_dump.txt
 ================================================================================
 Статус : НЕ ПУСТИЙ
@@ -5573,6 +6218,6 @@ class MainWindow(QMainWindow):
 ================================================================================
 СТАТИСТИКА
 ================================================================================
-Всього файлів : 92
-Заповнених    : 40
+Всього файлів : 94
+Заповнених    : 42
 Порожніх      : 52

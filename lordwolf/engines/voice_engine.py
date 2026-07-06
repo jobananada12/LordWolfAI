@@ -1,12 +1,11 @@
 """
 LordWolf AI Studio
-Voice Engine - РОЗШИРЕНИЙ ДІАПАЗОН
+Voice Engine - ВИПРАВЛЕНА ВЕРСІЯ (правильний пошук голосів)
 """
 
 from pathlib import Path
-import asyncio
-import edge_tts
 import time
+from elevenlabs.client import ElevenLabs
 
 
 class VoiceEngine:
@@ -15,118 +14,137 @@ class VoiceEngine:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.audio_files = []
 
-        # 🔥 РОЗШИРЕНІ НАЛАШТУВАННЯ ДЛЯ КОЖНОГО ПЕРСОНАЖА
-        self.voice_presets = {
-            # ===== ЧОЛОВІЧІ ПЕРСОНАЖІ (uk-UA-OstapNeural) =====
-            "Лорд Вовк": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-10%",      # повільний, солідний
-                "pitch": "-4Hz",     # нижчий, грубуватий
-            },
-            "Вовк": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-10%",
-                "pitch": "-4Hz",
-            },
-            "Дракон": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-30%",      # дуже повільний, грізний
-                "pitch": "-12Hz",    # дуже низький
-            },
-            "Чаклун": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-20%",      # повільний, таємничий
-                "pitch": "-8Hz",     # низький, моторошний
-            },
-            "Король": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-8%",       # величний, повільний
-                "pitch": "-2Hz",     # трохи нижче
-            },
-            "Лицар": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "0%",        # нормальний
-                "pitch": "0Hz",      # нормальний
-            },
-            "Монстр": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-35%",      # дуже повільний
-                "pitch": "-14Hz",    # дуже низький
-            },
+        self.api_key = "sk_7ed7f2945b9079908cd4df02064e1f09a28301e2b329db0f"
+        self.client = ElevenLabs(api_key=self.api_key)
 
-            # ===== ЖІНОЧІ ПЕРСОНАЖІ (uk-UA-PolinaNeural) =====
-            "Блондинка": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "+25%",      # швидка, дзвінка
-                "pitch": "+10Hz",    # дуже висока
-            },
-            "Брюнетка": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "+10%",      # середня швидкість
-                "pitch": "+4Hz",     # вища за норму
-            },
-            "Королева": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "-8%",       # повільна, велична
-                "pitch": "+2Hz",     # трохи вища
-            },
-            "Дівчинка": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "+35%",      # дуже швидка
-                "pitch": "+14Hz",    # дуже висока
-            },
-            "Відьма": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "-15%",      # повільна
-                "pitch": "-4Hz",     # низька для жінки
-            },
+        try:
+            response = self.client.voices.search()
+            self.voices = response.voices
 
-            # ===== ОПОВІДАЧ =====
-            "Оповідач": {
-                "voice": "uk-UA-OstapNeural",
-                "rate": "-5%",
-                "pitch": "0Hz",
-            },
+            # 🔥 СТВОРЮЄМО СЛОВНИК ПРОСТИХ ІМЕН → VOICE_ID
+            self.voice_dict = {}
+            for v in self.voices:
+                # Витягуємо просте ім'я (до " - ")
+                if " - " in v.name:
+                    simple_name = v.name.split(" - ")[0].strip()
+                else:
+                    simple_name = v.name.strip()
+                self.voice_dict[simple_name] = v.voice_id
 
-            # ===== ЗА ЗАМОВЧУВАННЯМ =====
-            "default": {
-                "voice": "uk-UA-PolinaNeural",
-                "rate": "0%",
-                "pitch": "0Hz",
-            }
+            print("[INFO] ElevenLabs: підключено!")
+            print(f"[INFO] Доступно голосів: {len(self.voices)}")
+            for v in self.voices[:10]:
+                simple_name = v.name.split(" - ")[0].strip() if " - " in v.name else v.name.strip()
+                print(f"  - {simple_name} (ID: {v.voice_id[:8]}...)")
+        except Exception as e:
+            print(f"[ERROR] Не вдалося отримати голоси: {e}")
+            self.voices = []
+            self.voice_dict = {}
+
+        default_voice_id = self.voices[0].voice_id if self.voices else None
+
+        # 🔥 РОЗПОДІЛ ЗА СТАТТЮ (прості імена)
+        self.male_voices = ["Roger", "Charlie", "George", "Harry", "Callum", "River", "Liam"]
+        self.female_voices = ["Sarah", "Laura", "Alice", "Dorothy", "Grace", "Bella"]
+
+        # 🔥 ПЕРСОНАЛЬНІ ПРИЗНАЧЕННЯ (тепер працюватимуть!)
+        self.custom_voice_map = {
+            "Лорд Вовк": self._find_voice(["Roger", "Charlie", "George"]),
+            "Вовк": self._find_voice(["Roger", "Charlie", "George"]),
+            "Дракон": self._find_voice(["Harry", "Charlie", "Roger"]),
+            "Чаклун": self._find_voice(["George", "Callum", "Roger"]),
+            "Король": self._find_voice(["Charlie", "Roger", "George"]),
+            "Лицар": self._find_voice(["Charlie", "Harry", "Roger"]),
+            "Монстр": self._find_voice(["Harry", "Charlie", "Roger"]),
+            "Оповідач": self._find_voice(["George", "Roger", "Charlie"]),
+            "Блондинка": self._find_voice(["Sarah", "Laura", "Alice"]),
+            "Брюнетка": self._find_voice(["Alice", "Laura", "Sarah"]),
+            "Королева": self._find_voice(["Laura", "Alice", "Sarah"]),
+            "Дівчинка": self._find_voice(["Sarah", "Laura", "Alice"]),
+            "Відьма": self._find_voice(["Laura", "Alice", "Sarah"]),
         }
+
+        self.default_voice_id = default_voice_id
+
+    def _find_voice(self, preferred_names):
+        for name in preferred_names:
+            if name in self.voice_dict:
+                return self.voice_dict[name]
+        # Якщо жоден не знайдено, шукаємо за статтю
+        for name in self.male_voices + self.female_voices:
+            if name in self.voice_dict:
+                return self.voice_dict[name]
+        if self.voices:
+            return self.voices[0].voice_id
+        return None
+
+    def _get_gender_for_character(self, character_name):
+        male_keywords = ["Лорд", "Вовк", "Дракон", "Чаклун", "Король", "Лицар", "Монстр", "Оповідач"]
+        female_keywords = ["Блондинка", "Брюнетка", "Королева", "Дівчинка", "Відьма"]
+        for word in male_keywords:
+            if word in character_name:
+                return "male"
+        for word in female_keywords:
+            if word in character_name:
+                return "female"
+        return "unknown"
+
+    def _get_voice_for_character(self, character_name):
+        # 1. Спочатку перевіряємо кастомне призначення
+        if character_name in self.custom_voice_map:
+            voice_id = self.custom_voice_map[character_name]
+            if voice_id:
+                return voice_id
+
+        # 2. Якщо немає, визначаємо за статтю
+        gender = self._get_gender_for_character(character_name)
+        if gender == "male":
+            for name in self.male_voices:
+                if name in self.voice_dict:
+                    return self.voice_dict[name]
+        elif gender == "female":
+            for name in self.female_voices:
+                if name in self.voice_dict:
+                    return self.voice_dict[name]
+
+        # 3. Якщо нічого не підійшло, беремо дефолтний
+        return self.default_voice_id
 
     def generate_character_voice(self, text: str, character_name: str) -> str:
         clean_text = text.strip()
         if not clean_text:
             return None
 
-        preset = self.voice_presets.get(character_name, self.voice_presets["default"])
-        voice = preset["voice"]
-        rate = preset.get("rate", "0%")
-        pitch = preset.get("pitch", "0Hz")
+        voice_id = self._get_voice_for_character(character_name)
+        if not voice_id:
+            print(f"[ERROR] Немає голосу для {character_name}")
+            return None
 
         timestamp = int(time.time() * 1000)
         filename = f"voice_{timestamp}.mp3"
         filepath = self.output_dir / filename
 
         try:
-            communicate = edge_tts.Communicate(
+            audio_generator = self.client.text_to_speech.convert(
+                voice_id=voice_id,
                 text=clean_text,
-                voice=voice,
-                rate=rate,
-                pitch=pitch
+                model_id="eleven_multilingual_v2",
+                output_format="mp3_44100_128",
+                language_code="uk",
             )
-
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(communicate.save(str(filepath)))
-            loop.close()
-
+            audio_bytes = b''.join(audio_generator)
+            with open(filepath, "wb") as f:
+                f.write(audio_bytes)
             self.audio_files.append(str(filepath))
-            print(f"[VOICE] {character_name} | {voice} | rate={rate}, pitch={pitch} -> {filename}")
-            return str(filepath)
 
+            # Шукаємо просте ім'я для логу
+            voice_name = "невідомий"
+            for name, vid in self.voice_dict.items():
+                if vid == voice_id:
+                    voice_name = name
+                    break
+            print(f"[VOICE] {character_name} -> {voice_name} (стать: {self._get_gender_for_character(character_name)})")
+            return str(filepath)
         except Exception as e:
             print(f"[ERROR] {character_name}: {e}")
             return None
