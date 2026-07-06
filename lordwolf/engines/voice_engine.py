@@ -1,11 +1,13 @@
 """
 LordWolf AI Studio
-Voice Engine - ВИПРАВЛЕНА ВЕРСІЯ (правильний пошук голосів)
+Voice Engine - ВИПРАВЛЕНА ВЕРСІЯ (правильний пошук голосів + нормалізація)
 """
 
 from pathlib import Path
 import time
 from elevenlabs.client import ElevenLabs
+from pydub import AudioSegment
+import io
 
 
 class VoiceEngine:
@@ -21,10 +23,8 @@ class VoiceEngine:
             response = self.client.voices.search()
             self.voices = response.voices
 
-            # 🔥 СТВОРЮЄМО СЛОВНИК ПРОСТИХ ІМЕН → VOICE_ID
             self.voice_dict = {}
             for v in self.voices:
-                # Витягуємо просте ім'я (до " - ")
                 if " - " in v.name:
                     simple_name = v.name.split(" - ")[0].strip()
                 else:
@@ -43,11 +43,9 @@ class VoiceEngine:
 
         default_voice_id = self.voices[0].voice_id if self.voices else None
 
-        # 🔥 РОЗПОДІЛ ЗА СТАТТЮ (прості імена)
         self.male_voices = ["Roger", "Charlie", "George", "Harry", "Callum", "River", "Liam"]
         self.female_voices = ["Sarah", "Laura", "Alice", "Dorothy", "Grace", "Bella"]
 
-        # 🔥 ПЕРСОНАЛЬНІ ПРИЗНАЧЕННЯ (тепер працюватимуть!)
         self.custom_voice_map = {
             "Лорд Вовк": self._find_voice(["Roger", "Charlie", "George"]),
             "Вовк": self._find_voice(["Roger", "Charlie", "George"]),
@@ -70,7 +68,6 @@ class VoiceEngine:
         for name in preferred_names:
             if name in self.voice_dict:
                 return self.voice_dict[name]
-        # Якщо жоден не знайдено, шукаємо за статтю
         for name in self.male_voices + self.female_voices:
             if name in self.voice_dict:
                 return self.voice_dict[name]
@@ -90,13 +87,11 @@ class VoiceEngine:
         return "unknown"
 
     def _get_voice_for_character(self, character_name):
-        # 1. Спочатку перевіряємо кастомне призначення
         if character_name in self.custom_voice_map:
             voice_id = self.custom_voice_map[character_name]
             if voice_id:
                 return voice_id
 
-        # 2. Якщо немає, визначаємо за статтю
         gender = self._get_gender_for_character(character_name)
         if gender == "male":
             for name in self.male_voices:
@@ -107,8 +102,24 @@ class VoiceEngine:
                 if name in self.voice_dict:
                     return self.voice_dict[name]
 
-        # 3. Якщо нічого не підійшло, беремо дефолтний
         return self.default_voice_id
+
+    def _normalize_audio(self, audio_data, target_dbfs=-20.0):
+        """
+        Нормалізує аудіо до заданого рівня гучності (target_dbfs).
+        """
+        try:
+            # Завантажуємо аудіо з байтового потоку
+            audio = AudioSegment.from_mp3(io.BytesIO(audio_data))
+            # Вирівнюємо гучність
+            normalized_audio = audio.apply_gain(target_dbfs - audio.dBFS)
+            # Експортуємо в MP3 (з тими ж параметрами)
+            output = io.BytesIO()
+            normalized_audio.export(output, format="mp3", bitrate="128k")
+            return output.getvalue()
+        except Exception as e:
+            print(f"[WARNING] Не вдалося нормалізувати аудіо: {e}")
+            return audio_data
 
     def generate_character_voice(self, text: str, character_name: str) -> str:
         clean_text = text.strip()
@@ -133,11 +144,15 @@ class VoiceEngine:
                 language_code="uk",
             )
             audio_bytes = b''.join(audio_generator)
+
+            # 🔥 НОРМАЛІЗАЦІЯ АУДІО
+            normalized_audio = self._normalize_audio(audio_bytes, target_dbfs=-18.0)
+
             with open(filepath, "wb") as f:
-                f.write(audio_bytes)
+                f.write(normalized_audio)
+
             self.audio_files.append(str(filepath))
 
-            # Шукаємо просте ім'я для логу
             voice_name = "невідомий"
             for name, vid in self.voice_dict.items():
                 if vid == voice_id:
